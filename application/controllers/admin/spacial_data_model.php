@@ -89,5 +89,16 @@ class spacial_data_model extends admin_base{
         $this->view->display();
     }
 
+    /*
+  * 删除
+  *
+  * @return 1:0
+  * */
+    public function del() {
+        $id = gpc( 'id' );
+        if( empty( $id ) ) $this->show_message( 'ID不能为空' );
+
+        echo ( $this->db->delete( ['id'=>$id] ) ) ? 1 : 0 ;
+    }
 
 }
