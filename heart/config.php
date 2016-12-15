@@ -113,11 +113,10 @@ return [
             //链接
             'host' => [
 //                '127.0.0.1:6379',
-                'bj01-ops-g1rdsc01.pre.gomeplus.com:7007',
-                'bj01-ops-g1rdsc02.pre.gomeplus.com:7007',
-                'bj01-ops-g1rdsc03.pre.gomeplus.com:7007',
-                'bj01-ops-g1rdsc04.pre.gomeplus.com:7007',
-                'bj01-ops-g1rdsc05.pre.gomeplus.com:7007',
+                'bj01-ops.pre.heartphp.com:7007',
+                'bj01-ops.pre.heartphp.com:7007',
+                'bj01-ops.pre.heartphp.com:7007',
+                'bj01-ops.pre.heartphp.com:7007',
             ]
         ],
     ],
