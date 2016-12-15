@@ -15,7 +15,7 @@ use heart\utils\form;
 use heart\utils\unzip;
 
 //专题服务部分
-use services\spacial as services_spacial;
+use services\spacials\spacial as services_spacial;
 
 class spacial extends admin_base{
 
