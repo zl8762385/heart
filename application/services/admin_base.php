@@ -69,7 +69,7 @@ abstract class admin_base extends controller{
         $_where[] = "menuid in (".$this->userinfos['role']['list'].")";
         $where = implode( ' AND ', $_where );
         $check_file = $this->db_menus->get_one( '*', $where );
-//        if( empty( $check_file ) ) $this->show_message( '没有访问权限.', make_url( 'admin', 'index', 'right' ) );
+        if( empty( $check_file ) ) $this->show_message( '没有访问权限.', make_url( 'admin', 'index', 'right' ) );
 
         $this->view->assign( 'userinfos', $this->userinfos );
     }

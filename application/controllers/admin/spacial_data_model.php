@@ -9,7 +9,7 @@
  */
 namespace controllers\admin;
 
-use models\admin_spacial_model;
+use services\spacials\spacial_field;
 use services\admin_base;
 
 class spacial_data_model extends admin_base{
@@ -19,6 +19,9 @@ class spacial_data_model extends admin_base{
         parent::__construct();
 
         $this->db = load_model( 'admin_spacial_model' );
+
+        //模型字段
+        $this->_filed = new spacial_field();
     }
 
     /*
@@ -90,15 +93,172 @@ class spacial_data_model extends admin_base{
     }
 
     /*
-  * 删除
-  *
-  * @return 1:0
-  * */
+     * 删除
+     *
+     * @return 1:0
+     * */
     public function del() {
         $id = gpc( 'id' );
         if( empty( $id ) ) $this->show_message( 'ID不能为空' );
 
         echo ( $this->db->delete( ['id'=>$id] ) ) ? 1 : 0 ;
+    }
+
+    /*
+     * 添加模型字段
+     *
+     * @return
+     * */
+    public function add_field() {
+        if( gpc( 'dosubmit', 'P' ) ) {
+            $infos = gpc( 'infos', 'P' );
+            $model_id = gpc( 'model_id', 'P' );
+
+            if( empty( $infos ) ) $this->show_message( '操作失败,请联系管理员.' );
+
+            $rs = $this->db->get_one( 'id,field', [ 'id' => $model_id ] );
+
+            $infos['createtime'] = $infos['updatetime'] = time();
+
+
+            if( !empty( $infos ) ) {
+                foreach( $infos as $k => &$v ) {
+                    $v = urlencode( $v );
+                }
+            }
+
+            if( empty( $rs['field'] ) ) {
+                $data = json_encode( [ $infos ] );
+            } else {
+                $data = json_decode( $rs['field'], true );
+                array_push( $data, $infos);
+                $data = json_encode( $data );
+            }
+
+            if( $this->db->update( [ 'field' => $data ], ['id' => $model_id] ) ) {
+                $this->show_message( '操作成功', make_url( __M__, __C__, 'index_field', [ 'id='.$model_id ] ) );
+            } else {
+                $this->show_message( '操作失败,请联系管理员.' );
+            }
+        }
+
+        $id = gpc( 'id' );
+        if( empty( $id ) ) $this->show_message( 'ID不能为空' );
+        $infos = $this->db->get_one( 'id,name', 'id='.$id );
+
+        $this->view->assign( 'id', $id);
+        $this->view->assign( 'field_list', $this->_filed->field_list());
+        $this->view->assign( 'name', $infos['name']);
+        $this->view->display();
+    }
+
+    /*
+     * 模型字段列表
+     *
+     * @return
+     * */
+    public function index_field() {
+        $id = gpc( 'id' );
+        if( empty( $id ) ) $this->show_message( 'ID不能为空' );
+
+        $infos = $this->db->get_one( 'id,name,field', 'id='.$id );
+
+        $lists = [];
+        if( isset( $infos['field'] ) && !empty( $infos['field'] ) ) {
+            $lists = json_decode( $infos['field'], true );
+        }
+
+        $this->view->assign( 'name', $infos['name']);
+        $this->view->assign( 'lists', $lists);
+        $this->view->assign( 'refer', ( isset( $_SERVER['HTTP_REFERER'] ) ) ? $_SERVER['HTTP_REFERER'] : '' );
+        $this->view->assign( 'id', $id);
+        $this->view->display();
+    }
+
+
+    /*
+     * 删除字段
+     *
+     * @return 1:0
+     * */
+    public function del_field() {
+        $id = gpc( 'id' );
+        $k = gpc( 'k' );
+        if( empty( $id ) || $k =='' ) $this->show_message( '删除失败[0].' );
+
+        $infos = $this->db->get_one( 'id,field', [ 'id' => $id ] );
+        if( empty( $infos ) ) $this->show_message( '删除失败[1].' );
+
+        $infos['field'] = json_decode( $infos['field'], true );
+        unset( $infos['field'][$k], $infos['id'] );
+        $infos['field'] = json_encode( $infos['field'] );
+
+
+
+        echo ( $this->db->update( $infos, ['id'=>$id] ) ) ? 1 : 0 ;
+    }
+
+    /*
+     * 添加模型字段
+     *
+     * @return
+     * */
+    public function edit_field() {
+        if( gpc( 'dosubmit', 'P' ) ) {
+            $infos = gpc( 'infos', 'P' );
+            $model_id = gpc( 'model_id', 'P' );
+            $field_k = gpc( 'field_k', 'P' );
+
+            if( empty( $infos ) ) $this->show_message( '操作失败,请联系管理员.' );
+
+            $rs = $this->db->get_one( 'id,field', [ 'id' => $model_id ] );
+
+            $infos['createtime'] = $infos['updatetime'] = time();
+
+
+            if( !empty( $infos ) ) {
+                foreach( $infos as $k => &$v ) {
+                    $v = urlencode( $v );
+                }
+            }
+
+
+            if( empty( $rs['field'] ) ) {
+                $data = json_encode( [ $infos ] );
+            } else {
+                $data = json_decode( $rs['field'], true );
+                $data[ $field_k ] = $infos;
+                $data = json_encode( $data );
+            }
+
+            if( $this->db->update( [ 'field' => $data ], ['id' => $model_id] ) ) {
+                $this->show_message( '操作成功', make_url( __M__, __C__, 'index_field', [ 'id='.$model_id ] ) );
+            } else {
+                $this->show_message( '操作失败,请联系管理员.' );
+            }
+        }
+
+        $id = gpc( 'id' );
+        $field_k = gpc( 'k' );
+        if( empty( $id ) || $field_k == '' ) $this->show_message( '获取失败[0]' );
+        $infos = $this->db->get_one( 'id,name,field', 'id='.$id );
+
+        $_infos = [];
+        if( isset( $infos['field'] ) && !empty( $infos['field'] ) ) {
+            $_infos = json_decode( $infos['field'], true );
+            $_infos = $_infos[$field_k];
+
+            foreach( $_infos as $k => &$v ) {
+                $v = urldecode( $v );
+            }
+        }
+
+        $this->view->assign( 'id', $id);
+        $this->view->assign( 'field_list', $this->_filed->field_list());
+        $this->view->assign( 'name', $infos['name']);
+        $this->view->assign( 'infos', $_infos);
+        $this->view->assign( 'field_k', $field_k);
+        $this->view->display();
     }
 
 }

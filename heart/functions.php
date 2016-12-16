@@ -358,13 +358,13 @@ function write_files( $files, $content ) {
  * @param $name string 模板变量
  * @param $params [] 给模板传递参数 [ 'id' => 1, 'pid' => 22 ]
  * */
-function tpl_include( $name, $params = [] ) {
-    if( empty( $name ) ) return null;
+function tpl_include( $template_name, $params = [] ) {
+    if( empty( $template_name ) ) return null;
     extract( $GLOBALS['tpl_data'] );
 
     if( !empty( $params ) ) extract( $params );
 
-    include( $GLOBALS['tpl_module'].$name.EXT );
+    include( $GLOBALS['tpl_module'].$template_name.EXT );
 
     //使用过的变量直接注销
     unset( $GLOBALS['tpl_data'], $GLOBALS['tpl_module'] );

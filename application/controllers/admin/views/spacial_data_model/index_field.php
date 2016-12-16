@@ -2,7 +2,7 @@
 
 <section class="wrapper">
     <div class="panel mr0">
-        <?php if( !empty( $pid ) ):?>
+        <?php if( !empty( $id ) ):?>
         <header class="panel-heading">
             <a href="<?=$refer?>">
                 <button type="button" class="btn btn-inverse">
@@ -15,11 +15,11 @@
         </header>
         <header>
             <header class="panel-heading">
-                <a href="<?=make_url( __M__, __C__, 'index' )?>" class="btn btn-info btn-sm" id="index-listing">
-                    <i class="icon-gears2 btn-icon"></i>模型列表
+                <a href="javascript:void(0);" class="btn btn-info btn-sm" id="index-listing">
+                    <i class="icon-gears2 btn-icon"></i><?=$name?> - 字段列表
                 </a>
-                <a href="<?=make_url( __M__, __C__, 'add' )?>" class="btn btn-default btn-sm" id="index-add">
-                    <i class="icon-plus btn-icon"></i>添加模型
+                <a href="<?=make_url( __M__, __C__, 'add_field', [ 'id='.$id ] )?>" class="btn btn-default btn-sm" id="index-add">
+                    <i class="icon-plus btn-icon"></i>添加字段
                 </a>
             </header>
         </header>
@@ -30,22 +30,31 @@
                     <thead>
                     <tr>
                         <th class="tablehead">ID</th>
-                        <th class="tablehead">模型名称</th>
+                        <th class="tablehead">字段类型</th>
+                        <th class="tablehead">字段别名</th>
+                        <th class="tablehead">字段名</th>
                         <th class="tablehead">创建时间</th>
+                        <th class="tablehead">更新时间</th>
                         <th class="tablehead">操作</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <?php foreach( $lists as $k => $v ):?>
-                    <tr id="m_<?=$v['id']?>">
+                    <?php
+                        foreach( $lists as $k => $v ):
+                    ?>
 
-                        <td><?=$v['id']?></td>
-                        <td><a href="<?=make_url( __M__, __C__, 'index_field', ['id='.$v['id']])?>" class="menunamea"><?=$v['name']?> <i class="icon-gears2"></i></a> </td>
+                    <tr id="m_<?=$k?>">
+
+                        <td><?=$k+1?></td>
+                        <td><?=$v['type']?></td>
+                        <td><?=urldecode( $v['name'] )?> </td>
+                        <td><?=urldecode( $v['field_name'] )?> </td>
                         <td><?=date( 'Y-m-d H:i:s', $v['createtime'] )?></td>
+                        <td><?=date( 'Y-m-d H:i:s', $v['updatetime'] )?></td>
 
                         <td>
-                            <a href="<?=make_url( __M__, __C__, 'edit', ['id='.$v['id']] )?>" class="btn btn-primary btn-xs">修改</a>
-                            <a href="javascript:void(0)" onclick="del('<?=make_url( __M__, __C__, 'del', ['id='.$v['id']] )?>', <?=$v['id']?>)" class="btn btn-danger btn-xs">删除</a>
+                            <a href="<?=make_url( __M__, __C__, 'edit_field', ['id='.$id, 'k='.$k] )?>" class="btn btn-primary btn-xs">修改</a>
+                            <a href="javascript:void(0)" onclick="del('<?=make_url( __M__, __C__, 'del_field', ['id='.$id,'k='.$k] )?>', <?=$k?>)" class="btn btn-danger btn-xs">删除</a>
                         </td>
                     </tr>
                     <?php endforeach;?>
@@ -59,11 +68,6 @@
 <!--                            <input type="submit" class="btn btn-info" name="submit" value="排序">-->
 <!--                        </div>-->
 
-                        <div class="pull-right">
-                            <ul class="pagination pagination-sm mr0">
-                                <?=$page?>
-                            </ul>
-                        </div>
                     </div>
                 </div>
             </div>

@@ -47,9 +47,9 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-lg-12">
-                        <div class="pull-left">
-                            <input type="submit" class="btn btn-info" name="submit" value="排序">
-                        </div>
+<!--                        <div class="pull-left">-->
+<!--                            <input type="submit" class="btn btn-info" name="submit" value="排序">-->
+<!--                        </div>-->
 
                         <div class="pull-right">
                             <ul class="pagination pagination-sm mr0">
