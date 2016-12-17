@@ -15,6 +15,9 @@ namespace heart\utils;
 
 class unzip{
 
+    //html文件名称
+    public $html_names = [];
+
     public function __construct(){
         //init code here...
         header("content-type:text/html;charset=utf8");
@@ -56,6 +59,7 @@ class unzip{
 
                         // 文件名保存在磁盘上
                         $file_name = $dest_dir.zip_entry_name($zip_entry);
+                        //以第一个目录为文件名
                         if( empty( $_name ) && is_dir( $file_name ) ) $_name = $file_name;
 
                         // 检查文件是否需要重写
@@ -67,6 +71,9 @@ class unzip{
                             file_put_contents($file_name, $fstream);
                             // 设置权限
                             chmod($file_name, 0777);
+
+                            //获取html 名称
+                            $this->html_names( $_name, $file_name );
 //                            echo "save: ".$file_name."<br />";
                         }
 
@@ -89,6 +96,31 @@ class unzip{
             return false;
 
         }
+    }
+
+    /*
+     * 获取HTML 目录名称
+     *
+     * @param $root_path string 根目录
+     * @param $names string 文件路径
+     * */
+    public function html_names( $root_path, $names ) {
+        if( empty( $root_path ) || empty( $names ) ) return false;
+        $filename = str_replace( $root_path, '', $names );
+
+        //只要根目录文件
+        if( !strpos( $filename, '/' ) && strpos( $filename, '.html' ) ) {
+            $this->html_names[] = $filename;
+        }
+    }
+
+    /*
+     * 获取html_names
+     *
+     * @return []
+     * */
+    public function get_html_names() {
+        return $this->html_names;
     }
 
     /*

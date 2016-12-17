@@ -41,6 +41,37 @@ function openiframe(iframeurl,id,title,width,height,returntype) {
 		}).showModal(this);
 	return false;
 }
+
+//弹窗模板
+function dialog_tpl(iframeurl, _title,_id , _width = 800, _height = 500) {
+    //var text = $("#relation_search").val();
+    top.dialog({
+        id: _id,
+        fixed: true,
+        width: _width,
+        height: _height,
+        title: _title,
+        padding: 5,
+        url: iframeurl,
+        onclose: function () {
+            if (this.returnValue) {
+                var text=this.returnValue;
+                var rela=$('#relation').val();
+                $('#relation').val(rela+text);
+                var htmls = text.split("~wuzhicms~");
+                var sstext = '';
+                $.each(htmls, function(i,value){
+                    if(value!='') {
+                        sstext = value.split("~wz~");
+                        $("#relation_result").css("padding-top","5px");
+                        $("#relation_result").append("<li><strong>标题：</strong>"+sstext[0]+" <strong style='padding-left:30px;'>链接：</strong>"+sstext[1]+"</li>");
+                    }
+                });
+            }
+        }
+    }).showModal(this);
+}
+
 //跳转到url
 function gotourl(url) {
 	location.href = url;

@@ -27,30 +27,48 @@ class spacial extends controller {
         //当前路径
         $current_page = str_replace( ROOT_PATH, '', $files );
 
+        if( !isset( $data['infos']['_files'] ) || !is_array( $data['infos']['_files'] ) ) return false;
+        //遍历 获取html
+
+        $page_html = '';
+        foreach( $data['infos']['_files'] as $k => $v ) {
+            $path = $files.$v;
+            $html = file_get_contents( $path );
+
+            $page_node = explode( '.', $v );
+            $this->replace_text( $current_page, $html );
+
+            $page_html .=<<<HTML
+<page_{$page_node[0]}  page="{$v}">
+    <![CDATA[
+        {$html}
+    ]]>
+</page_{$page_node[0]}>
+HTML;
+        }
+
         //批量替换链接
-        $this->replace_text( $current_page, $data['html'] );
 
         $xml =<<<EOF
 <?xml version="1.0" encoding="UTF-8"?>
 <root>
     <head>
         <title>{$data['infos']['name']}</title>
-        <english_title>{$data['infos']['en_name']}</english_title>
+        <files>{$data['infos']['files']}</files>
+        <english_title>{$data['infos']['directory']}</english_title>
         <root_path>{$current_page}</root_path>
         <createtime>{$data['infos']['createtime']}</createtime>
     </head>
-    <data>
-        <![CDATA[
-            {$data['html']}
-        ]]>
-    </data>
+    <body>
+        {$page_html}
+    </body>
 </root>
 EOF;
 
-        $filename = $files.$data['infos']['en_name'];
-        //生成XML and PHP
+        $filename = $files.$data['infos']['directory'];
+        //生成XML
         write_files($filename.'.xml', $xml);
-        write_files($filename.'.php', $data['html']);
+        return true;
     }
 
     /*
