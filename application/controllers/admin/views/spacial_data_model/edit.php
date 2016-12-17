@@ -41,6 +41,16 @@
                 </div>
                 -->
 
+                <?php if( !empty( $spacial_infos ) ):?>
+                <div class="form-group">
+                    <label class="col-sm-2 col-xs-4 control-label">所属专题</label>
+                    <div class="col-lg-3 col-sm-4 col-xs-4 input-group">
+                            <input type="hidden" name="infos[sid]" value="<?=$spacial_infos['id']?>">
+                            <input class="form-control" id="disabledInput" placeholder="<?=$spacial_infos['name']?>" disabled="" type="text">
+                    </div>
+                </div>
+                <?php endif;?>
+
                 <div class="form-group">
                     <label class="col-sm-2 col-xs-4 control-label">模型名称</label>
                     <div class="col-lg-3 col-sm-4 col-xs-4 input-group">

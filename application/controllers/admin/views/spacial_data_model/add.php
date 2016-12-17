@@ -12,12 +12,17 @@
 </style>
 <section class="wrapper">
     <div class="panel">
+
         <header>
             <header class="panel-heading">
-                <a href="<?=make_url( __M__, __C__, 'index' )?>" class="btn btn-default btn-sm" id="index-listing">
-                    <i class="icon-gears2 btn-icon"></i>模型列表
+                <a href="<?=make_url( __M__, __C__, 'index', [ 'sid='.$sid ] )?>" class="btn btn-default btn-sm" id="index-listing">
+                    <i class="icon-gears2 btn-icon"></i>
+                    <?php if( !empty( $spacial_infos ) ):?>
+                        <?=$spacial_infos['name']?> -
+                    <?php endif;?>
+                    模型列表
                 </a>
-                <a href="<?=make_url( __M__, __C__, 'add' )?>" class="btn btn-info btn-sm" id="index-add">
+                <a href="<?=make_url( __M__, __C__, 'add', [ 'sid='.$sid ] )?>" class="btn btn-info btn-sm" id="index-add">
                     <i class="icon-plus btn-icon"></i>添加模型
                 </a>
             </header>
@@ -40,6 +45,16 @@
                     </div>
                 </div>
                 -->
+
+                <?php if( !empty( $spacial_infos ) ):?>
+                <div class="form-group">
+                    <label class="col-sm-2 col-xs-4 control-label">所属专题</label>
+                    <div class="col-lg-3 col-sm-4 col-xs-4 input-group">
+                            <input type="hidden" name="infos[sid]" value="<?=$spacial_infos['id']?>">
+                            <input class="form-control" id="disabledInput" placeholder="<?=$spacial_infos['name']?>" disabled="" type="text">
+                    </div>
+                </div>
+                <?php endif;?>
 
                 <div class="form-group">
                     <label class="col-sm-2 col-xs-4 control-label">模型名称</label>

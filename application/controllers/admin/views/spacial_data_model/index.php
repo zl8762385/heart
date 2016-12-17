@@ -2,11 +2,11 @@
 
 <section class="wrapper">
     <div class="panel mr0">
-        <?php if( !empty( $pid ) ):?>
+        <?php if( !empty( $spacial_infos ) ):?>
         <header class="panel-heading">
-            <a href="<?=$refer?>">
+            <a href="<?=make_url( __M__, 'spacial', 'index' )?>">
                 <button type="button" class="btn btn-inverse">
-                    <i class="icon-chevron-left btn-icon"></i>返回上级
+                    <i class="icon-chevron-left btn-icon"></i>返回 - 专题列表
                 </button>
             </a>
         </header>
@@ -15,10 +15,14 @@
         </header>
         <header>
             <header class="panel-heading">
-                <a href="<?=make_url( __M__, __C__, 'index' )?>" class="btn btn-info btn-sm" id="index-listing">
-                    <i class="icon-gears2 btn-icon"></i>模型列表
+                <a href="<?=make_url( __M__, __C__, 'index', [ 'sid='.$sid ] )?>" class="btn btn-info btn-sm" id="index-listing">
+                    <i class="icon-gears2 btn-icon"></i>
+                    <?php if( !empty( $spacial_infos ) ):?>
+                        <?=$spacial_infos['name']?> -
+                    <?php endif;?>
+                    模型列表
                 </a>
-                <a href="<?=make_url( __M__, __C__, 'add' )?>" class="btn btn-default btn-sm" id="index-add">
+                <a href="<?=make_url( __M__, __C__, 'add', [ 'sid='.$sid ] )?>" class="btn btn-default btn-sm" id="index-add">
                     <i class="icon-plus btn-icon"></i>添加模型
                 </a>
             </header>
