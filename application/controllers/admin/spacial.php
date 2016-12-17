@@ -27,12 +27,17 @@ class spacial extends admin_base{
 
         $this->db = load_model( 'admin_spacial' );
 
+
+        //专题模型
+        $this->db_model = load_model( 'admin_spacial_model' );
+
         //spacial目录
         $this->spacial_path = ROOT_PATH.'resource/spacial/';
 
         //上传目录
         $this->upload_path = ROOT_PATH.'resource/upload/';
 
+        //services spacial
         $this->_spacial = new services_spacial();
     }
 
@@ -77,30 +82,31 @@ EOF;
             $infos = gpc( 'infos', 'P' );
 
             if( empty( $infos['name'] ) ) $this->show_message( '请输入专题名称(中文)' );
-//            if( empty( $infos['en_name'] ) ) $this->show_message( '请输入专题名称(英文)' );
+//            if( empty( $infos['directory'] ) ) $this->show_message( '请输入专题名称(英文)' );
 
             $infos['createtime'] = $infos['updatetime'] = time();
 
             if( is_file( $this->upload_path.$infos['zip'] ) ) {
                 $_file = new unzip();
-                $infos['en_name'] = $_file->unzip( $this->upload_path.$infos['zip'], $this->spacial_path);
+                $infos['directory'] = $_file->unzip( $this->upload_path.$infos['zip'], $this->spacial_path);
+                $infos['files'] = is_array( $_file->html_names ) ? implode( ',', $_file->html_names ) : '' ;
 
-                if( !$infos['en_name'] ) {
+                if( !$infos['directory'] ) {
                     $this->show_message( 'ZIP 解压失败' );
                 }
 
-                $spacial_page = $this->spacial_path.$infos['en_name'].'/';
-                $_filesname = $spacial_page.$this->get_default_page( $infos['files'] );
-
-                if( !is_file($_filesname ) ) $this->show_message( '默认首页不存在. <br/>'.$_filesname );
+                $spacial_page = $this->spacial_path.$infos['directory'].'/';
 
                 //生成XML数据模板
                 $xml_data = [];
                 $xml_data['infos'] = $infos;
-                $xml_data['html'] = file_get_contents( $_filesname );
+                $xml_data['infos']['_files'] = $_file->html_names;
 
                 //生成XML 顺带生成PHP文件
-                $this->_spacial->make_xml( $spacial_page, $xml_data );
+                if( !$this->_spacial->make_xml( $spacial_page, $xml_data ) ) {
+                    $this->show_message( '文件创建失败.' );
+
+                }
             } else {
 
                 $this->show_message( 'ZIP包不存在.' );
@@ -159,6 +165,9 @@ EOF;
         $id = gpc( 'id' );
         if( empty( $id ) ) $this->show_message( 'ID不能为空' );
 
+        //专题模型
+        $this->db_model->delete( [ 'sid' => $id ] );
+        //删除专题
         echo ( $this->db->delete( ['id'=>$id] ) ) ? 1 : 0 ;
     }
 
@@ -179,15 +188,32 @@ EOF;
      * */
     public function view() {
         $id = gpc( 'id' );
+        $type = gpc( 'type' );
+        $page_url = gpc( 'page_url' );
+
         if( empty( $id ) ) $this->show_message( 'ID不能为空' );
 
-        $infos = $this->db->get_one( 'id,name,en_name,files', [ 'id' =>$id ] );
+        $infos = $this->db->get_one( 'id,name,directory,files', [ 'id' =>$id ] );
         if( empty( $infos ) ) $this->show_message( '专题不存在.' );
-        if( empty( $infos['en_name'] ) ) $this->show_message( '专题解析,请查看创建专题时,解压ZIP是否正确.' );
+        if( empty( $infos['directory'] ) ) $this->show_message( '专题解析,请查看创建专题时,解压ZIP是否正确.' );
 
-        $index = $this->spacial_path.$infos['en_name'] .'/'. $infos['en_name'] . '.php';
-        if( !is_file( $index ) ) $this->show_message( "$index <br/>不存在,请查看创建专题时,解压ZIP是否正确." );
+        $this->view->assign( 'infos', $infos );
 
-        include( $index );
+        switch( $type ) {
+            case 'select':
+                //选择 视图模板
+                $files_arr = explode( ',', $infos['files'] );
+                $this->view->assign( 'files_arr', $files_arr );
+                $this->view->display( 'spacial/select_view' );
+                break;
+            default:
+                //可视化编辑
+                if( !strstr( $infos['files'], $page_url ) ) $this->show_message( '视图不存在.' );
+
+                $xml_path = $this->spacial_path.$infos['directory'].'/'.$infos['directory'].'.xml';
+                $_xml = simplexml_load_file( $xml_path, 'SimpleXMLElement', LIBXML_NOCDATA );
+                $_method = 'page_'.explode( '.', $page_url )[0];
+                echo $_xml->body->{$_method};
+        }
     }
 }

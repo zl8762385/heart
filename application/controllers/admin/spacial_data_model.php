@@ -18,7 +18,11 @@ class spacial_data_model extends admin_base{
     public function __construct() {
         parent::__construct();
 
+        //专题模型
         $this->db = load_model( 'admin_spacial_model' );
+
+        //专题
+        $this->db_spacial = load_model( 'admin_spacial' );
 
         //模型字段
         $this->_filed = new spacial_field();
@@ -30,11 +34,27 @@ class spacial_data_model extends admin_base{
      * @return tpl
      * */
     public function index() {
+        $sid = gpc( 'sid' );
+        $_where = $spacial_infos = [];
 
-        $where = '';
+        if( !empty( $sid ) ) {
+            $spacial_infos = $this->db_spacial->get_one( 'id,name', [ 'id' => $sid ] );
+            $_where[] = 'sid='.$sid;
+        } else {
+            //sid = 0 属于公共模型部分
+            $_where[] = 'sid=0';
+
+        }
+
+
+        $where = implode( ' AND ', $_where );
+
         $lists = $this->db->select_lists( '*', $where, '10', 'id ASC');
 
         $this->view->assign( 'page', $this->db->page );
+        //专题信息
+        $this->view->assign( 'spacial_infos', $spacial_infos );
+        $this->view->assign( 'sid', ( $sid ) ? $sid : 0 );
         $this->view->assign( 'lists', $lists );
         $this->view->display();
     }
@@ -60,6 +80,14 @@ class spacial_data_model extends admin_base{
             }
         }
 
+        $sid = gpc( 'sid' );
+        $spcial_infos = [];
+        if( !empty( $sid ) ) {
+            $spcial_infos = $this->db_spacial->get_one( 'id,name', [ 'id' => $sid ] );
+        }
+
+        $this->view->assign( 'spacial_infos', $spcial_infos );
+        $this->view->assign( 'sid', ( !empty( $sid ) ) ? $sid : 0 );
         $this->view->display();
     }
 
@@ -78,17 +106,27 @@ class spacial_data_model extends admin_base{
             $infos['updatetime'] = time();
 
             if( $this->db->update( $infos, ['id' => $id] ) ) {
-                $this->show_message( '操作成功', make_url( __M__, __C__, 'index' ) );
+                $sid = ( isset( $infos['sid'] ) ) ? $infos['sid'] : 0 ;
+                $this->show_message( '操作成功', make_url( __M__, __C__, 'index', [ 'sid='.$sid ] ) );
             } else {
                 $this->show_message( '操作失败,请联系管理员.' );
             }
         }
 
         $id= gpc( 'id' );
+
         if( empty( $id) ) $this->show_message( 'ID不能为空' );
+        //模型数据
         $infos = $this->db->get_one( '*',['id' => $id] );
 
+        //专题相关信息
+        $spcial_infos = [];
+        if( !empty( $infos['sid'] ) ) {
+            $spcial_infos = $this->db_spacial->get_one( 'id,name', [ 'id' => $infos['sid'] ] );
+        }
+
         $this->view->assign( 'infos', $infos );
+        $this->view->assign( 'spacial_infos', $spcial_infos );
         $this->view->display();
     }
 

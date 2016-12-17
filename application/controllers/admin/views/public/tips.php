@@ -29,7 +29,7 @@
             <div class="prompcontainer">
                 <h4><i class="icon-info"></i><span><?=$title?></span></h4>
                 <script language="javascript">
-                    setTimeout("gotourl('<?=$url?>');",1000);
+                    setTimeout("gotourl('<?=$url?>');",3000);
                 </script>
                 <a href="<?=$url?>">页面将自动跳转，请稍等</a>
             </div>

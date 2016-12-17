@@ -3,7 +3,6 @@
 <section class="wrapper">
     <div class="panel mr0">
 
-        </header>
         <header>
             <header class="panel-heading">
                 <a href="<?=make_url( 'admin', __C__, 'index' )?>" class="btn btn-info btn-sm" id="index-listing">
