@@ -42,15 +42,15 @@
                         <span class="help-block">例如：http://www.xx.com/spacial_names</span>
                     </div>
                 </div>
-                -->
 
                 <div class="form-group">
                     <label class="col-sm-2 col-xs-4 control-label">文件名</label>
                     <div class="col-lg-3 col-sm-4 col-xs-4 input-group">
                         <input type="text" class="form-control" name="infos[files]" value="" color="#000000">
-                        <span class="help-block">默认首页名称 例如:spacial.html 默认index.html</span>
+                        <span class="help-block">如果未填写,默认index.html,压缩包存在多文件使用逗号区分,例如:a.html,b.html,c.html</span>
                     </div>
                 </div>
+                -->
 
                 <div class="form-group">
                     <label class="col-sm-2 col-xs-4 control-label">封面图</label>
