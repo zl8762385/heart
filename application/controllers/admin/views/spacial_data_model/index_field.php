@@ -12,7 +12,6 @@
         </header>
         <?php endif;?>
 
-        </header>
         <header>
             <header class="panel-heading">
                 <a href="javascript:void(0);" class="btn btn-info btn-sm" id="index-listing">

@@ -46,7 +46,7 @@
 
                 <div class="panel-body">
 
-                    <form name="myform" method="post" id="myform" action="" onsubmit="template_edit();return false;">
+                    <form name="myform" method="post" id="myform" action="">
 
                     <div style="padding:0px 10px 25px 10px;">
                         <a href="<?=make_url( __M__, 'spacial', 'index' )?>">
@@ -82,9 +82,7 @@
 
 
                         function template_edit() {
-                            var code = document.getElementById('ctlFlash').getText();
-                            $("#wzhtml").val(code);
-                            $("$myform").submit();
+                            $("#myform").submit();
                         }
                     </script>
 

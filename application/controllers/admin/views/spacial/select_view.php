@@ -9,7 +9,7 @@
                     <thead>
                     <tr>
                         <th class="tablehead" style="padding-left:20px;"> 文件名</th>
-                        <th class="tablehead" style="padding-left:20px;"> 操作</th>
+                        <th class="tablehead" style="padding-left:20px;"> </th>
                     </tr>
                     </thead>
                     <tbody>

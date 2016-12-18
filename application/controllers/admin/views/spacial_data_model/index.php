@@ -12,7 +12,6 @@
         </header>
         <?php endif;?>
 
-        </header>
         <header>
             <header class="panel-heading">
                 <a href="<?=make_url( __M__, __C__, 'index', [ 'sid='.$sid ] )?>" class="btn btn-info btn-sm" id="index-listing">
