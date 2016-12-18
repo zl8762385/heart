@@ -13,7 +13,7 @@ Heart V3 框架是一个简洁，实用，高效，遵循apache协议的php开�
 ![image](https://github.com/zl8762385/heart/blob/develop/resource/github/a3.png)
 ![image](https://github.com/zl8762385/heart/blob/develop/resource/github/a4.png)
 
-
+4/专题管理
 ![image](https://github.com/zl8762385/heart/blob/develop/resource/github/t1.png)
 ![image](https://github.com/zl8762385/heart/blob/develop/resource/github/t2.png)
 ![image](https://github.com/zl8762385/heart/blob/develop/resource/github/t3.png)
