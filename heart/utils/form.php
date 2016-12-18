@@ -11,6 +11,56 @@ namespace heart\utils;
 
 class form {
 
+	/*
+	 * 编辑器
+	 * form::editor('content' , 'content', '', 'normal')
+	 * @param string $name     字段name名
+	 * @param string $editname 编辑器id名
+	 * @param string $value    初始化内容
+	 * @param string $toolbars 编辑器样式,可选风格：basic，normal
+	 * @param string $edit_type 编辑器类型
+	 * @return string
+	 * */
+	public static function editor($name = 'content', $editname = 'content', $value = '', $toolbars = 'basic') {
+
+        $_js = load_config( 'domain' ).load_config( 'front_admin' )['js'];
+
+		$str = '';
+        $str .= '<script id="' . $editname . '" name="' . $name . '" type="text/plain">' . $value . '</script>';
+
+        $str .= '<script type="text/javascript" src="' . $_js . 'ueditor/ueditor.config.js"></script>';
+        $str .= '<script type="text/javascript" src="' . $_js . 'ueditor/ueditor.all.js"></script>';
+
+        $str .= '<script type="text/javascript">';
+
+        $str .= 'var ue = UE.getEditor("' . $editname . '", {';
+        if ($toolbars == 'basic') {
+            $str .= 'toolbars: [';
+            $str .= "['fullscreen', 'undo', 'redo', 'bold','italic', 'underline', 'strikethrough', 'removeformat', 'formatmatch', 'forecolor', 'backcolor',
+         'fontfamily', 'fontsize',
+        'justifyleft', 'justifycenter', 'justifyright',
+        'link', 'unlink','simpleupload','inserttable']";
+            $str .= '],';
+        } elseif ($toolbars == 'normal') {
+            $str .= 'toolbars: [';
+            $str .= "['fullscreen', 'source', 'undo', 'redo',
+        'bold', 'italic', 'underline', 'strikethrough', 'removeformat', 'formatmatch', 'autotypeset', 'blockquote', 'pasteplain',  'forecolor', 'backcolor', 'insertorderedlist', 'insertunorderedlist',
+        'rowspacingtop', 'rowspacingbottom', 'lineheight',
+         'fontfamily', 'fontsize', 'indent',
+        'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify',
+        'link', 'unlink', 'anchor', '|', 'imagenone', 'imageleft', 'imageright', 'imagecenter', '|',
+        'simpleupload', 'insertimage', 'emotion', 'insertvideo', 'music', 'attachment', 'map','|','inserttable', 'deletetable', 'insertparagraphbeforetable','insertrow', 'deleterow', 'insertcol', 'deletecol', 'mergecells', 'mergeright', 'mergedown', 'splittocells', 'splittorows', 'splittocols','pagebreak']";
+            $str .= '],';
+        }
+        $str .= 'autoHeightEnabled: false,';
+        $str .= 'autoFloatEnabled: true';
+
+        $str .= '});';
+        $str .= '</script>';
+
+		return $str;
+	}
+
     /*
      * 文件上传2，支持更多参数设置
      * form::attachment('' ,1 , 'infos[files]', '', '', false) 单个文件  带图片预览
@@ -42,16 +92,12 @@ class form {
         $_images = load_config( 'domain' ).load_config( 'front_admin' )['images'];
         $_KEY = load_config( 'public_key' );
 
-        $str = '';
-        if (!defined('PUPLOAD_INIT')) {
-            define('PUPLOAD_INIT', TRUE);
-            $str = '<script src="' . $_js . 'dialog/dialog-plus.js"></script>';
-            $str .= '<script type="text/javascript" src="' . $_js . 'json2.js"></script>';
-            $str .= '<script type="text/javascript" src="' . $_js . 'html5upload/plupload.full.min.js"></script>';
-            $str .= '<script type="text/javascript" src="' . $_js . 'html5upload/extension.js"></script>';
-        }
-        $limit = $limit ? $limit : 1;
+        $str = '<script src="' . $_js . 'dialog/dialog-plus.js"></script>';
+        $str .= '<script type="text/javascript" src="' . $_js . 'json2.js"></script>';
+        $str .= '<script type="text/javascript" src="' . $_js . 'html5upload/plupload.full.min.js"></script>';
+        $str .= '<script type="text/javascript" src="' . $_js . 'html5upload/extension.js"></script>';
 
+        $limit = $limit ? $limit : 1;
         $token = md5($ext . $_KEY);
 
         //$limit=1 显示缩略图预览
