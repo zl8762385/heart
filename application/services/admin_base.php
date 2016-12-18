@@ -98,10 +98,8 @@ abstract class admin_base extends controller{
     public function show_message( $title, $url = '' ){
         if( empty( $title ) ) return false;
 
-        $refer = ( isset( $_SERVER['HTTP_REFERER'] ) ) ? $_SERVER['HTTP_REFERER'] : '' ;
-
         $this->view->assign( 'title', $title );
-        $this->view->assign( 'url', ( empty( $url ) ) ? $refer : $url );
+        $this->view->assign( 'url', $url );
         $this->view->display( 'public/tips' );
     }
 

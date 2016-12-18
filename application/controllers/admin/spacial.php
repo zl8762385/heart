@@ -9,8 +9,15 @@
  */
 namespace controllers\admin;
 
+//后台基类
 use services\admin_base;
+
+//专题 视图区块
+use services\spacials\block;
+
+//form工具
 use heart\utils\form;
+
 //解压缩
 use heart\utils\unzip;
 
@@ -213,7 +220,11 @@ EOF;
                 $xml_path = $this->spacial_path.$infos['directory'].'/'.$infos['directory'].'.xml';
                 $_xml = simplexml_load_file( $xml_path, 'SimpleXMLElement', LIBXML_NOCDATA );
                 $_method = 'page_'.explode( '.', $page_url )[0];
-                echo $_xml->body->{$_method};
+                $html = (string)$_xml->body->{$_method};
+
+                $block = new block( $id );
+                $block->parse( $html );
+                echo $block->get();
         }
     }
 }

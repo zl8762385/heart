@@ -28,10 +28,13 @@
             <div class="prompthead"></div>
             <div class="prompcontainer">
                 <h4><i class="icon-info"></i><span><?=$title?></span></h4>
+
+                <?php if( !empty( $url ) ):?>
                 <script language="javascript">
                     setTimeout("gotourl('<?=$url?>');",3000);
                 </script>
                 <a href="<?=$url?>">页面将自动跳转，请稍等</a>
+                <?php endif;?>
             </div>
             <div class="promptfooter"><a href="javascript:history.back();" >[ 返回上一页 ]</a></div>
         </div>
