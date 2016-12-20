@@ -21,7 +21,7 @@ class block extends controller {
     //专题ID
     public $id = '';
 
-    //模板语法
+    //模板标签
     public $left_str = '<{';
     public $right_str = '}>';
 
@@ -58,13 +58,15 @@ class block extends controller {
      * @param $key string 参数
      * */
     public function block( $key ) {
-
         $infos = $this->get_block( $key );
         if( empty( $infos ) ) return false;
 
         $rs = '';
         switch( $infos['type'] ) {
-            case 0: case 1:
+            case 0:
+                $rs = $this->block_line( $infos );
+                break;
+            case 1:
                 $rs = $infos['content'];
                 break;
             case 2:
@@ -95,7 +97,50 @@ class block extends controller {
      * @return string;
      * */
     public function get() {
-        return $this->html;
+        $html = $this->html;
+        $html .= $this->block_script();
+        return $html;
+    }
+
+    /*
+     * 碎片行
+     *
+     * @param $rs string 碎片数据
+     * @param $arr array 碎片相关参数
+     * @return html（带着碎片框架和实体代码一起返回）
+     * */
+    public function block_line( $arr ) {
+
+        $node[] = "spacial-action='block'";
+        $node[] = "id-data='{$arr['id']}'";
+        $node[] = "type-data='{$arr['type']}'";
+        $node[] = "name-data='{$arr['name']}'";
+
+        return "<div class='spacial_block' ".implode( ' ', $node ).">{$arr['content']}</div>";
+    }
+    /*
+     * 碎片脚本（可视化编辑时会动态生成的脚本）
+     *
+     * @return string(HTML JS CSS)
+     * */
+    public function block_script() {
+
+        $html =<<<EOF
+<style>
+.spacial_block { cursor:pointer;background:#f9f64d; filter:alpha(Opacity=80);-moz-opacity:0.5;opacity: 0.5;z-index:100; width:100%; }
+</style>
+<script>
+    jQuery(document).ready( function () {
+        $('[spacial-action=block]').bind( 'click', function () {
+            var name = $(this).attr( 'name-data' );
+            alert( name )
+        } );
+    } );
+</script>
+EOF;
+
+        return $html;
+
     }
 
 }
