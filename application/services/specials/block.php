@@ -113,6 +113,7 @@ class block extends controller {
 
         $node[] = "action-special='block'";
         $node[] = "data-id='{$arr['id']}'";
+        $node[] = "data-sid='{$arr['sid']}'";
         $node[] = "data-type='{$arr['type']}'";
         $node[] = "data-name='{$arr['name']}'";
 
@@ -127,6 +128,10 @@ class block extends controller {
 
         $domain = load_config( 'domain' );
         $js = $domain.load_config( 'front_admin' )['js'];
+
+        $editor_url = make_url( 'admin', 'special_block', 'edit' );
+        $textarea_url = make_url( 'admin', 'special_block', 'edit' );
+        $datalist_url = make_url( 'admin', 'special_views', 'datalist' );
         $html =<<<EOF
 <style>
 .special_block { cursor:pointer;background:#f9f64d; filter:alpha(Opacity=80);-moz-opacity:0.5;opacity: 0.5;z-index:100; width:100%; }
@@ -138,6 +143,18 @@ class block extends controller {
 
 <script src="{$js}base.js"></script>
 <script src="{$js}special.js"></script>
+
+<script>
+jQuery(document).ready( function () {
+    jQuery(document).ready( function () {
+        window.special.init( {
+            'editor_url': '{$editor_url}',
+            'textarea_url': '{$textarea_url}',
+            'datalist_url': '{$datalist_url}',
+        } );
+    } );
+} );
+</script>
 
 EOF;
 

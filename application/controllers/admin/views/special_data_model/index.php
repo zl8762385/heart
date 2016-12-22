@@ -47,6 +47,7 @@
                         <td><?=date( 'Y-m-d H:i:s', $v['createtime'] )?></td>
 
                         <td>
+<!--                            <a href="--><?//=make_url( __M__, __C__, 'datalists', ['id='.$v['id']] )?><!--" class="btn btn-info btn-xs">专题数据管理</a>-->
                             <a href="<?=make_url( __M__, __C__, 'edit', ['id='.$v['id']] )?>" class="btn btn-primary btn-xs">修改</a>
                             <a href="javascript:void(0)" onclick="del('<?=make_url( __M__, __C__, 'del', ['id='.$v['id']] )?>', <?=$v['id']?>)" class="btn btn-danger btn-xs">删除</a>
                         </td>

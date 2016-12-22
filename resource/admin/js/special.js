@@ -11,7 +11,13 @@
         //默认options
         this.options = {
             //碎片弹窗事件
-            'dialog_event': $( '[action-special=block]' )
+            'dialog_event': $( '[action-special=block]' ),
+            //编辑器类型url
+            'editor_url': '',
+            //文本框类型url
+            'textarea_url': '',
+            //数据类型url
+            'datalist_url': '',
         }
     }
 
@@ -19,7 +25,7 @@
         init: function ( options ) {
             this._options = $.extend( this.options, options);
 
-            //绑定时间
+            //绑定事件
             this.bind();
         },
         bind: function () {
@@ -33,20 +39,38 @@
             var self = d.data.self,
                 _options = self._options;
 
+            console.log( _options )
             var type = _options.dialog_event.attr( 'data-type'),
                 name = _options.dialog_event.attr( 'data-name'),
-                id = _options.dialog_event.attr( 'data-id');
+                id = _options.dialog_event.attr( 'data-id'),
+                sid = _options.dialog_event.attr( 'data-sid'),
+                url = '';
 
-            dialog_tpl( 'http://v3.heartphp.com/admin/menu/index', name, id, 500, 400);
-            //console.log(type, name ,id)
+            //url
+            switch( parseInt( type  ) ) {
+                case 0:
+                    //编辑器
+                    url = _options.editor_url;
+                    break;
+                case 1:
+                    //文本框
+                    url = _options.textarea_url;
+                    break;
+                case 2:
+                    url = _options.datalist_url;
+                    break;
+                    //数据列表
+                    break;
+            }
+            if( url != '' ) {
+                url += '?id='+id+'&sid='+sid;
+            }
+
+            //dialog
+            dialog_tpl( url, name, id, 900, 600);
         }
     } );
 
     w.special = new special();
 
 })( jQuery,window );
-
-//执行
-jQuery(document).ready( function () {
-    window.special.init( );
-} );
