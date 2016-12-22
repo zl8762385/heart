@@ -9,23 +9,23 @@
  */
 namespace controllers\admin;
 
-use services\spacials\spacial_field;
+use services\specials\special_field;
 use services\admin_base;
 
-class spacial_data_model extends admin_base{
+class special_data_model extends admin_base{
 
     public $db = [];
     public function __construct() {
         parent::__construct();
 
         //专题模型
-        $this->db = load_model( 'admin_spacial_model' );
+        $this->db = load_model( 'admin_special_model' );
 
         //专题
-        $this->db_spacial = load_model( 'admin_spacial' );
+        $this->db_special = load_model( 'admin_special' );
 
         //模型字段
-        $this->_filed = new spacial_field();
+        $this->_filed = new special_field();
     }
 
     /*
@@ -35,10 +35,10 @@ class spacial_data_model extends admin_base{
      * */
     public function index() {
         $sid = gpc( 'sid' );
-        $_where = $spacial_infos = [];
+        $_where = $special_infos = [];
 
         if( !empty( $sid ) ) {
-            $spacial_infos = $this->db_spacial->get_one( 'id,name', [ 'id' => $sid ] );
+            $special_infos = $this->db_special->get_one( 'id,name', [ 'id' => $sid ] );
             $_where[] = 'sid='.$sid;
         } else {
             //sid = 0 属于公共模型部分
@@ -53,7 +53,7 @@ class spacial_data_model extends admin_base{
 
         $this->view->assign( 'page', $this->db->page );
         //专题信息
-        $this->view->assign( 'spacial_infos', $spacial_infos );
+        $this->view->assign( 'special_infos', $special_infos );
         $this->view->assign( 'sid', ( $sid ) ? $sid : 0 );
         $this->view->assign( 'lists', $lists );
         $this->view->display();
@@ -83,10 +83,10 @@ class spacial_data_model extends admin_base{
         $sid = gpc( 'sid' );
         $spcial_infos = [];
         if( !empty( $sid ) ) {
-            $spcial_infos = $this->db_spacial->get_one( 'id,name', [ 'id' => $sid ] );
+            $spcial_infos = $this->db_special->get_one( 'id,name', [ 'id' => $sid ] );
         }
 
-        $this->view->assign( 'spacial_infos', $spcial_infos );
+        $this->view->assign( 'special_infos', $spcial_infos );
         $this->view->assign( 'sid', ( !empty( $sid ) ) ? $sid : 0 );
         $this->view->display();
     }
@@ -122,11 +122,11 @@ class spacial_data_model extends admin_base{
         //专题相关信息
         $spcial_infos = [];
         if( !empty( $infos['sid'] ) ) {
-            $spcial_infos = $this->db_spacial->get_one( 'id,name', [ 'id' => $infos['sid'] ] );
+            $spcial_infos = $this->db_special->get_one( 'id,name', [ 'id' => $infos['sid'] ] );
         }
 
         $this->view->assign( 'infos', $infos );
-        $this->view->assign( 'spacial_infos', $spcial_infos );
+        $this->view->assign( 'special_infos', $spcial_infos );
         $this->view->display();
     }
 

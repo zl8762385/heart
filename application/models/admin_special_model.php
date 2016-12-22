@@ -1,6 +1,6 @@
 <?php
 /*
- * 专题碎片区块
+ * 专题模型
  *
  * @copyright			(C) 2016 Heart
  * @author              maoxiaoqi <15501100090@163.com> <qq:3677989>
@@ -11,10 +11,10 @@ namespace models;
 
 use heart\model as model;
 
-class admin_spacial_block extends model{
+class admin_special_model extends model{
 
     //表名
-    public $name = 'admin_spacial_block';
+    public $name = 'admin_special_model';
 
     //前缀
     public $prefix = 'heart_';

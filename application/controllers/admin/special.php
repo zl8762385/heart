@@ -13,7 +13,7 @@ namespace controllers\admin;
 use services\admin_base;
 
 //专题 视图区块
-use services\spacials\block;
+use services\specials\block;
 
 //form工具
 use heart\utils\form;
@@ -22,9 +22,9 @@ use heart\utils\form;
 use heart\utils\unzip;
 
 //专题服务部分
-use services\spacials\spacial as services_spacial;
+use services\specials\special as services_special;
 
-class spacial extends admin_base{
+class special extends admin_base{
 
     //db
     public $db = [];
@@ -32,20 +32,20 @@ class spacial extends admin_base{
     public function __construct() {
         parent::__construct();
 
-        $this->db = load_model( 'admin_spacial' );
+        $this->db = load_model( 'admin_special' );
 
 
         //专题模型
-        $this->db_model = load_model( 'admin_spacial_model' );
+        $this->db_model = load_model( 'admin_special_model' );
 
-        //spacial目录
-        $this->spacial_path = ROOT_PATH.'resource/spacial/';
+        //special目录
+        $this->special_path = ROOT_PATH.'resource/special/';
 
         //上传目录
         $this->upload_path = ROOT_PATH.'resource/upload/';
 
-        //services spacial
-        $this->_spacial = new services_spacial();
+        //services special
+        $this->_special = new services_special();
     }
 
     public function test() {
@@ -59,9 +59,9 @@ class spacial extends admin_base{
 EOF;
         echo preg_replace( '/<link(.*?)href=[\'"](?!https|http\:\/\/)(.*?)[\'"]/i', '<link$1href="xx.com/$2"', $str );
 
-//        $s->make_xml( $this->spacial_path, '' );
+//        $s->make_xml( $this->special_path, '' );
 //        $s = new unzip();
-//        $s->unzip( ROOT_PATH.'yangguangchuchuang.zip',$this->spacial_path );
+//        $s->unzip( ROOT_PATH.'yangguangchuchuang.zip',$this->special_path );
     }
 
     /*
@@ -95,14 +95,14 @@ EOF;
 
             if( is_file( $this->upload_path.$infos['zip'] ) ) {
                 $_file = new unzip();
-                $infos['directory'] = $_file->unzip( $this->upload_path.$infos['zip'], $this->spacial_path);
+                $infos['directory'] = $_file->unzip( $this->upload_path.$infos['zip'], $this->special_path);
                 $infos['files'] = is_array( $_file->html_names ) ? implode( ',', $_file->html_names ) : '' ;
 
                 if( !$infos['directory'] ) {
                     $this->show_message( 'ZIP 解压失败' );
                 }
 
-                $spacial_page = $this->spacial_path.$infos['directory'].'/';
+                $special_page = $this->special_path.$infos['directory'].'/';
 
                 //生成XML数据模板
                 $xml_data = [];
@@ -110,7 +110,7 @@ EOF;
                 $xml_data['infos']['_files'] = $_file->html_names;
 
                 //生成XML 顺带生成PHP文件
-                if( !$this->_spacial->make_xml( $spacial_page, $xml_data ) ) {
+                if( !$this->_special->make_xml( $special_page, $xml_data ) ) {
                     $this->show_message( '文件创建失败.' );
 
                 }
@@ -211,13 +211,13 @@ EOF;
                 //选择 视图模板
                 $files_arr = explode( ',', $infos['files'] );
                 $this->view->assign( 'files_arr', $files_arr );
-                $this->view->display( 'spacial/select_view' );
+                $this->view->display( 'special/select_view' );
                 break;
             default:
                 //可视化编辑
                 if( !strstr( $infos['files'], $page_url ) ) $this->show_message( '视图不存在.' );
 
-                $xml_path = $this->spacial_path.$infos['directory'].'/'.$infos['directory'].'.xml';
+                $xml_path = $this->special_path.$infos['directory'].'/'.$infos['directory'].'.xml';
                 $_xml = simplexml_load_file( $xml_path, 'SimpleXMLElement', LIBXML_NOCDATA );
                 $_method = 'page_'.explode( '.', $page_url )[0];
                 $html = (string)$_xml->body->{$_method};

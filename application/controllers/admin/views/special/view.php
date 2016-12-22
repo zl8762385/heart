@@ -49,7 +49,7 @@
                     <form name="myform" method="post" id="myform" action="">
 
                     <div style="padding:0px 10px 25px 10px;">
-                        <a href="<?=make_url( __M__, 'spacial', 'index' )?>">
+                        <a href="<?=make_url( __M__, 'special', 'index' )?>">
                             <img src="<?=$domain.$images?>icon/folder-upload.png" />&nbsp;返回上级目录
                         </a>
 
@@ -98,7 +98,7 @@
     jQuery(document).ready( function () {
         $('[node-data=select_file]').bind( 'change', function () {
             var value = $(this).val();
-            location.href="<?=make_url( 'admin', 'spacial_tpl', 'view', ['id='.$id] )?>&page_url="+value;
+            location.href="<?=make_url( 'admin', 'special_tpl', 'view', ['id='.$id] )?>&page_url="+value;
         } );
     } );
 function isFullScreen(cm) {

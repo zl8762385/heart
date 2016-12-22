@@ -7,7 +7,7 @@
  *
  * 您可以自由使用该源码，但是在使用过程中，请保留作者信息。尊重他人劳动成果就是尊重自己
  **/
-namespace services\spacials;
+namespace services\specials;
 
 use heart\controller;
 
@@ -28,7 +28,7 @@ class block extends controller {
     public function __construct( $id ) {
         $this->id = $id;
 
-        $this->db_block = load_model( 'admin_spacial_block' );
+        $this->db_block = load_model( 'admin_special_block' );
     }
 
     /*
@@ -111,12 +111,12 @@ class block extends controller {
      * */
     public function block_line( $arr ) {
 
-        $node[] = "spacial-action='block'";
-        $node[] = "id-data='{$arr['id']}'";
-        $node[] = "type-data='{$arr['type']}'";
-        $node[] = "name-data='{$arr['name']}'";
+        $node[] = "special-action='block'";
+        $node[] = "data-id='{$arr['id']}'";
+        $node[] = "data-type='{$arr['type']}'";
+        $node[] = "data-name='{$arr['name']}'";
 
-        return "<div class='spacial_block' ".implode( ' ', $node ).">{$arr['content']}</div>";
+        return "<div class='special_block' ".implode( ' ', $node ).">{$arr['content']}</div>";
     }
     /*
      * 碎片脚本（可视化编辑时会动态生成的脚本）
@@ -127,12 +127,12 @@ class block extends controller {
 
         $html =<<<EOF
 <style>
-.spacial_block { cursor:pointer;background:#f9f64d; filter:alpha(Opacity=80);-moz-opacity:0.5;opacity: 0.5;z-index:100; width:100%; }
+.special_block { cursor:pointer;background:#f9f64d; filter:alpha(Opacity=80);-moz-opacity:0.5;opacity: 0.5;z-index:100; width:100%; }
 </style>
 <script>
     jQuery(document).ready( function () {
-        $('[spacial-action=block]').bind( 'click', function () {
-            var name = $(this).attr( 'name-data' );
+        $('[special-action=block]').bind( 'click', function () {
+            var name = $(this).attr( 'data-name' );
             alert( name )
         } );
     } );

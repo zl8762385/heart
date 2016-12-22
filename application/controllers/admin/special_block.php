@@ -12,7 +12,7 @@ namespace controllers\admin;
 use services\admin_base;
 use heart\utils\form;
 
-class spacial_block extends admin_base{
+class special_block extends admin_base{
 
     //db
     public $db = [];
@@ -20,13 +20,13 @@ class spacial_block extends admin_base{
     public function __construct() {
         parent::__construct();
 
-        $this->db = load_model( 'admin_spacial_block' );
+        $this->db = load_model( 'admin_special_block' );
 
         //专题列表
-        $this->db_spacial = load_model( 'admin_spacial' );
+        $this->db_special = load_model( 'admin_special' );
 
         //专题模型
-        $this->db_spacial_model = load_model( 'admin_spacial_model' );
+        $this->db_special_model = load_model( 'admin_special_model' );
     }
 
     /*
@@ -43,16 +43,16 @@ class spacial_block extends admin_base{
 
         $lists = $this->db->select_lists( '*', $where, '10', 'id ASC');
 
-        $spacial_infos = [];
+        $special_infos = [];
         if( !empty( $sid ) ) {
-            $spacial_infos = $this->db_spacial->get_one( 'id,name', [ 'id' => $sid ] );
+            $special_infos = $this->db_special->get_one( 'id,name', [ 'id' => $sid ] );
         }
 
         if( !empty( $lists ) ) {
             //获取模型数据
             foreach( $lists as $k => &$v ) {
                 if( empty( $v['mid'] ) ) continue;
-                $v['model_infos'] = $this->db_spacial_model->get_one( 'id,name', [ 'id' => $v['mid'] ]);
+                $v['model_infos'] = $this->db_special_model->get_one( 'id,name', [ 'id' => $v['mid'] ]);
             }
         }
 
@@ -60,7 +60,7 @@ class spacial_block extends admin_base{
         $this->view->assign( 'page', $this->db->page );
         $this->view->assign( 'sid', ( !empty( $sid ) ) ? $sid : 0 );
         $this->view->assign( 'lists', $lists );
-        $this->view->assign( 'spacial_infos', $spacial_infos);
+        $this->view->assign( 'special_infos', $special_infos);
         $this->view->display();
     }
 
@@ -70,7 +70,7 @@ class spacial_block extends admin_base{
      * @param $sid int 专题ID
      * @return []
      * */
-    public function get_spacial_model( $sid = '' ) {
+    public function get_special_model( $sid = '' ) {
         $_where = [];
         if( !empty( $sid ) ) {
             $_where[] = "sid=0 OR sid=".$sid;
@@ -78,7 +78,7 @@ class spacial_block extends admin_base{
 
         $where = implode( ' AND ', $_where );
 
-        return $this->db_spacial_model->select( 'id,name', $where);
+        return $this->db_special_model->select( 'id,name', $where);
     }
 
     /*
@@ -114,13 +114,13 @@ class spacial_block extends admin_base{
         $sid = gpc( 'sid' );
         $infos = [];
         if( !empty( $sid ) ) {
-            $infos = $this->db_spacial->get_one( 'id,name', 'id='.$sid );
+            $infos = $this->db_special->get_one( 'id,name', 'id='.$sid );
         }
 
         $this->view->assign( 'editor', form::editor('content' , 'content', '', 'normal') );
         $this->view->assign( 'sid', ( !empty( $sid ) ) ? $sid : 0 );
         $this->view->assign( 'infos', $infos );
-        $this->view->assign( 'm_lists', $this->get_spacial_model( $sid ) );
+        $this->view->assign( 'm_lists', $this->get_special_model( $sid ) );
         $this->view->display();
     }
 
@@ -160,15 +160,15 @@ class spacial_block extends admin_base{
         if( empty( $id ) ) $this->show_message( 'ID不能为空' );
         $infos = $this->db->get_one( '*',['id' => $id ] );
 
-        $spacial_infos = [];
+        $special_infos = [];
         if( !empty( $sid ) ) {
-            $spacial_infos = $this->db_spacial->get_one( 'id,name', [ 'id' => $sid ] );
+            $special_infos = $this->db_special->get_one( 'id,name', [ 'id' => $sid ] );
         }
 
         $this->view->assign( 'editor', form::editor('content' , 'content', $infos['content'], 'normal') );
         $this->view->assign( 'infos', $infos );
-        $this->view->assign( 'spacial_infos', $spacial_infos);
-        $this->view->assign( 'm_lists', $this->get_spacial_model( $sid ) );
+        $this->view->assign( 'special_infos', $special_infos);
+        $this->view->assign( 'm_lists', $this->get_special_model( $sid ) );
         $this->view->assign( 'sid', $sid);
         $this->view->display();
     }

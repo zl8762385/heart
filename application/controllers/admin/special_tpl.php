@@ -11,20 +11,20 @@ namespace controllers\admin;
 
 use services\admin_base;
 
-class spacial_tpl extends admin_base{
+class special_tpl extends admin_base{
 
     public $db = [];
     public function __construct() {
         parent::__construct();
 
         //专题模型
-        $this->db = load_model( 'admin_spacial_model' );
+        $this->db = load_model( 'admin_special_model' );
 
         //专题
-        $this->db_spacial = load_model( 'admin_spacial' );
+        $this->db_special = load_model( 'admin_special' );
 
-        //spacial目录
-        $this->spacial_path = ROOT_PATH.'resource/spacial/';
+        //special目录
+        $this->special_path = ROOT_PATH.'resource/special/';
 
     }
 
@@ -55,8 +55,8 @@ class spacial_tpl extends admin_base{
         $page_url = gpc( 'page_url' );
         if( empty( $id ) ) $this->show_message( '请求错误.' );
 
-        $infos = $this->db_spacial->get_one( 'id,name,directory,files', [ 'id' => $id ] );
-        $page_tpl = $this->spacial_path.$infos['directory'].'/'.$infos['directory'].'.xml';
+        $infos = $this->db_special->get_one( 'id,name,directory,files', [ 'id' => $id ] );
+        $page_tpl = $this->special_path.$infos['directory'].'/'.$infos['directory'].'.xml';
 
         $xml_obj = simplexml_load_file( $page_tpl, 'SimpleXMLElement', LIBXML_NOCDATA);
         if( !$xml_obj ) $this->show_message( $page_tpl.'<br/>模板解析失败.' );
@@ -77,7 +77,7 @@ class spacial_tpl extends admin_base{
         $this->view->assign( 'head', $xml_obj->head);
         //页面节点
         $this->view->assign( 'page_node', $method);
-        $this->view->display( 'spacial/view' );
+        $this->view->display( 'special/view' );
     }
 
 }

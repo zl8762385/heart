@@ -11,10 +11,10 @@ namespace models;
 
 use heart\model as model;
 
-class admin_spacial extends model{
+class admin_special extends model{
 
     //表名
-    public $name = 'admin_spacial';
+    public $name = 'admin_special';
 
     //前缀
     public $prefix = 'heart_';

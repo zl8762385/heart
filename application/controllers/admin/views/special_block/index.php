@@ -2,11 +2,16 @@
 
 <section class="wrapper">
     <div class="panel mr0">
-        <?php if( !empty( $spacial_infos ) ):?>
+        <?php if( !empty( $sid ) ):?>
         <header class="panel-heading">
-            <a href="<?=make_url( __M__, 'spacial', 'index' )?>">
+            <a href="<?=make_url( __M__, 'special', 'index' )?>">
                 <button type="button" class="btn btn-inverse">
                     <i class="icon-chevron-left btn-icon"></i>返回 - 专题列表
+                </button>
+            </a>
+            <a href="<?=$refer?>">
+                <button type="button" class="btn btn-inverse">
+                    <i class="icon-chevron-left btn-icon"></i>返回上一级
                 </button>
             </a>
         </header>
@@ -14,15 +19,15 @@
 
         <header>
             <header class="panel-heading">
-                <a href="<?=make_url( __M__, __C__, 'index', [ 'sid='.$sid ] )?>" class="btn btn-info btn-sm" id="index-listing">
+                <a href="<?=make_url( 'admin', __C__, 'index', [ 'sid='.$sid ] )?>" class="btn btn-info btn-sm" id="index-listing">
                     <i class="icon-gears2 btn-icon"></i>
-                    <?php if( !empty( $spacial_infos ) ):?>
-                        <?=$spacial_infos['name']?> -
+                    <?php if( isset( $special_infos['name'] ) ):?>
+                        <?=$special_infos['name']?> -
                     <?php endif;?>
-                    模型列表
+                    碎片列表
                 </a>
-                <a href="<?=make_url( __M__, __C__, 'add', [ 'sid='.$sid ] )?>" class="btn btn-default btn-sm" id="index-add">
-                    <i class="icon-plus btn-icon"></i>添加模型
+                <a href="<?=make_url( 'admin', __C__, 'add', [ 'sid='.$sid ] )?>" class="btn btn-default btn-sm" id="index-add">
+                    <i class="icon-plus btn-icon"></i>添加碎片
                 </a>
             </header>
         </header>
@@ -33,7 +38,9 @@
                     <thead>
                     <tr>
                         <th class="tablehead">ID</th>
-                        <th class="tablehead">模型名称</th>
+                        <th class="tablehead">碎片键值</th>
+                        <th class="tablehead">碎片类型</th>
+                        <th class="tablehead">调用代码</th>
                         <th class="tablehead">创建时间</th>
                         <th class="tablehead">操作</th>
                     </tr>
@@ -41,13 +48,22 @@
                     <tbody>
                     <?php foreach( $lists as $k => $v ):?>
                     <tr id="m_<?=$v['id']?>">
-
                         <td><?=$v['id']?></td>
-                        <td><a href="<?=make_url( __M__, __C__, 'index_field', ['id='.$v['id']])?>" class="menunamea"><?=$v['name']?> <i class="icon-gears2"></i></a> </td>
-                        <td><?=date( 'Y-m-d H:i:s', $v['createtime'] )?></td>
+                        <td><?=$v['name']?></td>
+                        <td>
+                            <?php if( $v['type'] == 0 || $v['type'] == 1 ):?>
+                                代码块
+                            <?php elseif( $v['type'] == 2 ):?>
+                                数据列表 ( <span style="font-weight: 800;">模型:</span><?=$v['model_infos']['name']?> )
+                            <?php endif;?>
+                        </td>
+                        <td>
+                            <input class="form-control" value="<{block('<?=$v['name']?>')}>" color="#000000" type="text">
+                        </td>
+                        <td><?=date( "Y-m-d H:i:s", $v['createtime'] )?></td>
 
                         <td>
-                            <a href="<?=make_url( __M__, __C__, 'edit', ['id='.$v['id']] )?>" class="btn btn-primary btn-xs">修改</a>
+                            <a href="<?=make_url( __M__, __C__, 'edit', ['id='.$v['id'], 'sid='.$v['sid']] )?>" class="btn btn-primary btn-xs">修改</a>
                             <a href="javascript:void(0)" onclick="del('<?=make_url( __M__, __C__, 'del', ['id='.$v['id']] )?>', <?=$v['id']?>)" class="btn btn-danger btn-xs">删除</a>
                         </td>
                     </tr>
@@ -58,9 +74,6 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-lg-12">
-<!--                        <div class="pull-left">-->
-<!--                            <input type="submit" class="btn btn-info" name="submit" value="排序">-->
-<!--                        </div>-->
 
                         <div class="pull-right">
                             <ul class="pagination pagination-sm mr0">

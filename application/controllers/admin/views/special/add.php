@@ -38,7 +38,7 @@
                     <label class="col-sm-2 col-xs-4 control-label">专题名称(英文)</label>
                     <div class="col-lg-3 col-sm-4 col-xs-4 input-group">
                         <input type="text" class="form-control" name="infos[en_name]" value="" color="#000000">
-                        <span class="help-block">例如：http://www.xx.com/spacial_names</span>
+                        <span class="help-block">例如：http://www.xx.com/special_names</span>
                     </div>
                 </div>
 

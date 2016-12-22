@@ -31,7 +31,7 @@
                     <div class="col-lg-3 col-sm-4 col-xs-4 input-group">
                         <?php if( !empty( $sid ) ):?>
                             <input type="hidden" name="infos[sid]" value="<?=$sid?>">
-                            <input class="form-control" id="disabledInput" placeholder="<?=$spacial_infos['name']?>" disabled="" type="text">
+                            <input class="form-control" id="disabledInput" placeholder="<?=$special_infos['name']?>" disabled="" type="text">
                         <?php endif;?>
                     </div>
                 </div>

@@ -35,16 +35,16 @@
                         <td><?=date('Y-m-d H:i:s', $v['createtime'])?></td>
                         <td>
 
-                            <a class="btn btn-default btn-xs" href="<?=make_url( __M__, 'spacial_data_model', 'index', ['sid='.$v['id']])?>" title="数据模型">数据模型</a>
-<!--                            <a class="btn btn-default btn-xs" target="_blank" href="--><?//=make_url( __M__, 'spacial_data', 'index', ['id='.$v['id']])?><!--">数据块</a>-->
-                            <a class="btn btn-default btn-xs" href="<?=make_url( __M__, 'spacial_tpl', 'view', ['id='.$v['id']])?>" title="在线编辑模板 - 快捷添加碎片数据">编辑模板</a>
+                            <a class="btn btn-default btn-xs" href="<?=make_url( __M__, 'special_data_model', 'index', ['sid='.$v['id']])?>" title="数据模型">数据模型</a>
+<!--                            <a class="btn btn-default btn-xs" target="_blank" href="--><?//=make_url( __M__, 'special_data', 'index', ['id='.$v['id']])?><!--">数据块</a>-->
+                            <a class="btn btn-default btn-xs" href="<?=make_url( __M__, 'special_tpl', 'view', ['id='.$v['id']])?>" title="在线编辑模板 - 快捷添加碎片数据">编辑模板</a>
                             <a class="btn btn-default btn-xs" href="javascript:dialog_tpl('<?=make_url( __M__, __C__, 'view', ['id='.$v['id'], 'type=select' ])?>', '选择 - 可视化编辑页面','view_tpl', 800, 300)">可视化编辑</a>
 
                         </td>
 
                         <td>
 
-                            <a href="<?=make_url( __M__, 'spacial_block', 'index', ['sid='.$v['id']] )?>" class="btn btn-info btn-xs">碎片管理</a>
+                            <a href="<?=make_url( __M__, 'special_block', 'index', ['sid='.$v['id']] )?>" class="btn btn-info btn-xs">碎片管理</a>
                             <a href="<?=make_url( __M__, __C__, 'edit', ['id='.$v['id']] )?>" class="btn btn-primary btn-xs">修改</a>
                             <a href="javascript:void(0)" onclick="del('<?=make_url( __M__, __C__, 'del', ['id='.$v['id']] )?>', <?=$v['id']?>)" class="btn btn-danger btn-xs">删除</a>
                         </td>
