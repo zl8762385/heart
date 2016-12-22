@@ -88,5 +88,5 @@
     }
 
 </script>
-</body>
-</html>
+
+<?php tpl_include( 'public/footer' )?>

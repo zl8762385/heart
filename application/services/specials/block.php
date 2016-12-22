@@ -111,7 +111,7 @@ class block extends controller {
      * */
     public function block_line( $arr ) {
 
-        $node[] = "special-action='block'";
+        $node[] = "action-special='block'";
         $node[] = "data-id='{$arr['id']}'";
         $node[] = "data-type='{$arr['type']}'";
         $node[] = "data-name='{$arr['name']}'";
@@ -125,18 +125,20 @@ class block extends controller {
      * */
     public function block_script() {
 
+        $domain = load_config( 'domain' );
+        $js = $domain.load_config( 'front_admin' )['js'];
         $html =<<<EOF
 <style>
 .special_block { cursor:pointer;background:#f9f64d; filter:alpha(Opacity=80);-moz-opacity:0.5;opacity: 0.5;z-index:100; width:100%; }
 </style>
-<script>
-    jQuery(document).ready( function () {
-        $('[special-action=block]').bind( 'click', function () {
-            var name = $(this).attr( 'data-name' );
-            alert( name )
-        } );
-    } );
-</script>
+
+<script src="{$js}jquery.min.js"></script>
+<link rel="stylesheet" href="{$js}dialog/ui-dialog.css" />
+<script src="{$js}dialog/dialog-plus.js"></script>
+
+<script src="{$js}base.js"></script>
+<script src="{$js}special.js"></script>
+
 EOF;
 
         return $html;

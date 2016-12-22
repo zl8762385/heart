@@ -1,3 +1,4 @@
+
 <?php tpl_include( 'public/header' )?>
 
 <section class="wrapper">
@@ -105,5 +106,5 @@
     }
 
 </script>
-</body>
-</html>
+
+<?php tpl_include( 'public/footer' )?>
