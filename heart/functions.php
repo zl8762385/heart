@@ -360,14 +360,15 @@ function write_files( $files, $content ) {
  * */
 function tpl_include( $template_name, $params = [] ) {
     if( empty( $template_name ) ) return null;
-    extract( $GLOBALS['tpl_data'] );
+
+    if( isset( $GLOBALS['tpl_data'] ) ) extract( $GLOBALS['tpl_data'] );
 
     if( !empty( $params ) ) extract( $params );
 
     include( $GLOBALS['tpl_module'].$template_name.EXT );
 
     //使用过的变量直接注销
-    unset( $GLOBALS['tpl_data'], $GLOBALS['tpl_module'] );
+//    unset( $GLOBALS['tpl_data'], $GLOBALS['tpl_module'] );
     return null;
 }
 
