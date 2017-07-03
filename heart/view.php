@@ -27,7 +27,7 @@ class view {
 
     public function __construct() {
         $this->_controller = load_config( 'directory_controller' );
-        $this->_view = 'views';
+        $this->_view = load_config( 'directory_view' );
         $this->_tmp_suffix = load_config( 'template_suffix' );
     }
 
@@ -52,16 +52,21 @@ class view {
 
         extract( $this->_data, EXTR_SKIP );
 
-        $root = APP_PATH.$this->_controller.'/';
+        //当前访问的模块 模板路径/支持夸模块调用
+        if( strpos( $tpl_name, '::' ) ) {
+            $module_name = strstr( $tpl_name, '::', 1 );
+            $module = $module_name.'/'.$this->_view.'/';
+            $tpl_name = str_replace( $module_name.'::', '', $tpl_name );
+        } else {
+            $module = __M__.'/'.$this->_view.'/';
+        }
 
-        //当前访问的模块 模板路径
-        $tpl_module = $root.__M__.'/'.$this->_view.'/';
-
+        $controller = APP_PATH.$this->_controller.'/';
         $path = ( $tpl_name ) ? $tpl_name : __C__.'/'.__A__ ;
-        $path = $tpl_module.$path.$this->_tmp_suffix;
+        $path = $controller.$module.$path.$this->_tmp_suffix;
 
         //当前模板模块写入全局
-        $GLOBALS['tpl_module'] = $tpl_module;
+        $GLOBALS['tpl_module'] = $module;
         $GLOBALS['tpl_data'] = $this->_data;
 
         if( !is_file( $path ) ) throw new error_exception( "$path \r\n not found" );

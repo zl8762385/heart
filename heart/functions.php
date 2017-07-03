@@ -355,18 +355,31 @@ function write_files( $files, $content ) {
  * tpl方法: include
  *
  * 用例:<?=tpl_include( 'public/header',['id'=>1,'pid'=>22] );?>
+ * 夸模块调用:<?=tpl_include( 'admin::public/header',['id'=>1,'pid'=>22] );?>
  * @param $name string 模板变量
  * @param $params [] 给模板传递参数 [ 'id' => 1, 'pid' => 22 ]
  * */
-function tpl_include( $template_name, $params = [] ) {
-    if( empty( $template_name ) ) return null;
+function tpl_include( $tpl_name, $params = [] ) {
+    if( empty( $tpl_name ) ) return null;
 
-    if( isset( $GLOBALS['tpl_data'] ) ) extract( $GLOBALS['tpl_data'] );
 
-    if( !empty( $params ) ) extract( $params );
+    $params && extract( $params );
+    if( isset( $GLOBALS['tpl_data'] ) && !empty( $GLOBALS['tpl_data'] ) ) {
+        extract( $GLOBALS['tpl_data'] );
+    }
 
-    include( $GLOBALS['tpl_module'].$template_name.EXT );
+    $controller = APP_PATH.load_config( 'directory_controller' ).'/';
 
+    //支持夸模块调用模板
+    if( $module = strstr( $tpl_name, '::', 1 ) ) {
+        $tpl = $module.'/'.load_config('directory_view').'/';
+        $tpl_name = str_replace( $module.'::', '', $tpl_name );
+    } else {
+        $tpl = $GLOBALS['tpl_module'];
+    }
+
+
+    include( $controller.$tpl.$tpl_name.EXT );
     //使用过的变量直接注销
 //    unset( $GLOBALS['tpl_data'], $GLOBALS['tpl_module'] );
     return null;

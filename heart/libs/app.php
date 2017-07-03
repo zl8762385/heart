@@ -51,7 +51,6 @@ class app {
      * */
     static public function run() {
 
-
         $controller = '\\'.load_config('directory_controller').'\\'.__M__.'\\'.__C__;
         $class = new $controller();
 

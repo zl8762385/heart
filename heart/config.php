@@ -29,6 +29,8 @@ return [
     'directory_model' => 'models',
     //业务服务目录名
     'directory_service' => 'services',
+    //模板目录名
+    'directory_view' => 'views',
     //扩展配置文件 pro,pre,test
     'ext_config' => 'app',
 

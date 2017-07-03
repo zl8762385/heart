@@ -79,7 +79,7 @@
 
                 <div class="form-group">
                     <label class="col-sm-2 col-xs-4 control-label">碎片内容</label>
-                    <div class="col-lg-7 col-sm-4 col-xs-4 input-group">
+                    <div class="col-lg-7 col-sm-4 col-xs-4 input-group"text-add>
                         <div id="editor_content">
                             <?=$editor?>
                         </div>
