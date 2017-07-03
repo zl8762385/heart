@@ -27,7 +27,8 @@ defined( 'REQUEST_METHOD' ) OR define( "REQUEST_METHOD", !isset($_SERVER['REQUES
 defined( 'LOG_PATH' ) OR define( 'LOG_PATH', ROOT_PATH.'runtime'.DS.'log'.DS );
 
 //系统信息
-defined( "IS_CLI" ) OR define( "IS_CLI", PHP_SAPI == 'cli' ? 1 : 0  );
+defined( "IS_CLI" ) OR define( "IS_CLI", PHP_SAPI== 'cli' ? 1 : 0  );
+defined( "IS_PATH_INFO" ) OR define( "IS_PATH_INFO", isset( $_SERVER['PATH_INFO'] ) && !empty( $_SERVER['PATH_INFO'] ) ? 1 : 0 );
 
 require_once FRAMEWORK_PATH."libs/heart".EXT;
 \heart\libs\heart::init();

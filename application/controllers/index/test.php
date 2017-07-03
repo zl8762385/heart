@@ -7,6 +7,10 @@ use heart\libs\log\log as log;
 
 class test extends controller {
 
+    public function zhangliang() {
+        echo 123;
+    }
+
     //缓存使用集合
     public function cache() {
 //        cache( 'test_redis', '12345');

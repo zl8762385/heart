@@ -22,13 +22,13 @@ namespace heart\libs;
 class dispatcher {
 
     //默认module
-    static $module = 'index';
+    public static $module = 'index';
 
     //默认controller
-    static $controller = 'index';
+    public static $controller = 'index';
 
     //默认action
-    static $action = 'index';
+    public static $action = 'index';
 
     //请求方式
     static $uri_request_method = [
@@ -40,30 +40,40 @@ class dispatcher {
     /*
      * 初始化
      * */
-    static public function init() {
+    public static function init() {
         //安全过滤
         $_GET     && self::filter_gpc( $_GET );
 //        $_POST    && self::filter_gpc( $_POST );
         $_COOKIE  && self::filter_gpc( $_COOKIE );
         $_REQUEST && self::filter_gpc( $_REQUEST );
 
-        $request = [];
-        //命令行模式请求 php index.php 模块 控制器 方法
-        if( IS_CLI ) $request = self::cli();
-        if( $_GET ) $request = self::vars();
-        if( load_config( 'uri_path_info' ) && empty($request) ) $request = self::pathinfo();
+        $request = self::get_type();
 
         //定义常量
-        if( !defined( "__M__" ) ) define( "__M__",  isset($request['module']) ? $request['module'] : self::$module );
-        if( !defined( "__C__" ) ) define( "__C__",  isset($request['controller']) ? $request['controller'] : self::$controller );
-        if( !defined( "__A__" ) ) define( "__A__",  isset($request['action']) ? $request['action']: self::$action );
+        defined( "__M__" ) or define( "__M__",  isset($request['module']) ? $request['module'] : self::$module );
+        defined( "__C__" ) or define( "__C__",  isset($request['controller']) ? $request['controller'] : self::$controller );
+        defined( "__A__" ) or define( "__A__",  isset($request['action']) ? $request['action']: self::$action );
+    }
+
+    /*
+     * 获取执行的类型;
+     * */
+    public static function get_type() {
+
+        //cli
+        if( IS_CLI ) return self::cli();
+
+        //pathinfo
+        if ( IS_PATH_INFO) return self::pathinfo();
+
+        return self::vars();
     }
 
     /*
      * 处理动态请求
      * @return void
      * */
-    static public function vars() {
+    public static function vars() {
         $request = [];
         foreach( self::$uri_request_method as $k => $v ) {
 
@@ -79,22 +89,17 @@ class dispatcher {
      * @return array
      * */
     static public function cli() {
-        $clis = $_SERVER['argv'];
-        unset( $clis[0] );
-
-        $argv = [];
-        foreach( $clis as $v ) $argv[] = $v;
-
-        $r = array();
-        switch ( $_SERVER['argc'] ) {
-            case 3:
+        $argv = ( isset( $_SERVER['argv'][1] )  ) ? explode('/', $_SERVER['argv'][1]) : [] ;
+        switch ( count($argv) ) {
+            case 2:
                 list( $r['controller'], $r['action'] ) = $argv;
                 break;
-            case 4:
+            case 3:
                 list( $r['module'],$r['controller'], $r['action'] ) = $argv;
                 break;
+            default:
+                $r = [];
         }
-
         return $r;
     }
 

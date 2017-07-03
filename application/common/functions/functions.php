@@ -21,17 +21,18 @@
 function make_url( $m, $c, $a, $param = [] ) {
     if( empty( $m) || empty( $c ) || empty($a) ) return false;
 
-    $pathinfo = load_config( 'uri_path_info' );
     $domain = load_config( 'domain' );
 
     $param = ( empty( $param ) ) ? '' : implode( '&', $param ) ;
-    if( $pathinfo ) {
+    if( IS_PATH_INFO ) {
         if( ( !empty( $param ) ) ) $param = '?'.$param;
-        return $domain."{$m}/{$c}/{$a}".$param;
+        $uri = $domain."{$m}/{$c}/{$a}".$param;
     } else {
         if( ( !empty( $param ) ) ) $param = '&'.$param;
-        return $domain."index.php?m={$m}&c={$c}&a={$a}{$param}";
+        $uri = $domain."index.php?m={$m}&c={$c}&a={$a}{$param}";
     }
+
+    return $uri;
 }
 
 /*
