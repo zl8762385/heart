@@ -13,12 +13,12 @@ use heart\libs\log\log as log;
 
 class error {
 
-    static  protected $error_type = '';
+    protected static $error_type = '';
 
     /*
      * 初始化并注册
      * */
-    static public function init() {
+    public static function init() {
         set_error_handler( [__CLASS__, 'error_handler'] );
         register_shutdown_function( [__CLASS__, 'shutdown_handler'] );
     }
@@ -27,7 +27,7 @@ class error {
      * 自定义异常处理
      * @return void
      * */
-    static public function exception_handler( $e ) {
+    public static function exception_handler( $e ) {
 
         self::$error_type = log::INFO;
         self::handler($e->getMessage(),$e->getLine(),$e->getFile(), $e->getCode(),'异常提示');
@@ -37,7 +37,7 @@ class error {
      * 自定义错误
      * @return void
      * */
-    static public function error_handler($errno, $message, $file, $line) {
+    public static function error_handler($errno, $message, $file, $line) {
 
         self::$error_type = log::ERROR;
         self::handler($message,$line,$file, $errno);
@@ -47,7 +47,7 @@ class error {
      * 最后执行方法
      * @return void
      * */
-    static public function shutdown_handler() {
+    public static function shutdown_handler() {
         if( !is_null( $error = error_get_last() ) && self::is_fatal( $error['type'] ) ) {
 
             self::$error_type = log::FATAL;
@@ -63,7 +63,7 @@ class error {
      * @param $type int 错误级别
      * @return int
      * */
-    static public function is_fatal( $type ) {
+    public static function is_fatal( $type ) {
         return in_array($type, [E_ERROR, E_CORE_ERROR, E_COMPILE_ERROR, E_PARSE]);
     }
 
@@ -76,7 +76,7 @@ class error {
      * @param $title string 标题
      * @return tpl
      * */
-    static public function handler($message, $line, $file, $type, $title = '提示') {
+    public static function handler($message, $line, $file, $type, $title = '提示') {
         //记录日志
         log::record( [
             'msg' => $message,
@@ -106,7 +106,7 @@ class error {
      * @param $file string 文件路径
      * @return array 错误文件内容
      */
-    static public function get_source_code( $line, $file ) {
+    public static function get_source_code( $line, $file ) {
         // 读取前9行和后9行
         $first = ($line - 9 > 0) ? $line - 9 : 1;
 

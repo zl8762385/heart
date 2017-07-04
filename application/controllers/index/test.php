@@ -8,7 +8,13 @@ use heart\libs\log\log as log;
 class test extends controller {
 
     public function index() {
-        echo 'index default';
+        $html =<<<EOF
+<pre>234</pre>
+console.log("%c%s","color: red; background: yellow; font-size: 24px;","警告！");
+EOF;
+        echo $html;
+
+//        echo 'index default';
     }
     public function zhangliang() {
         echo 'zhangliang 123';
