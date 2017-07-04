@@ -104,3 +104,4 @@
     </div>
     </div>
 </section>
+<?php tpl_include( 'public/footer' )?>
