@@ -19,6 +19,9 @@
 
 namespace heart\libs;
 
+//路由驱动
+use heart\libs\router\driver as router;
+
 class dispatcher {
 
     //默认module
@@ -42,13 +45,9 @@ class dispatcher {
      * */
     public static function init() {
         //安全过滤
-        $_GET     && self::filter_gpc( $_GET );
-        $_COOKIE  && self::filter_gpc( $_COOKIE );
-        $_REQUEST && self::filter_gpc( $_REQUEST );
-//        $_POST    && self::filter_gpc( $_POST );
-
-        $request = self::get_type();
-
+        self::safety();
+        //获取路由信息
+        $request = self::get();
         //定义常量
         defined( "__M__" ) or define( "__M__",  isset($request['module']) ? $request['module'] : self::$module );
         defined( "__C__" ) or define( "__C__",  isset($request['controller']) ? $request['controller'] : self::$controller );
@@ -56,15 +55,28 @@ class dispatcher {
     }
 
     /*
+     * 安全过滤
+     * @return void
+     * */
+    public static function safety() {
+        //安全过滤
+        $_GET     && self::filter_gpc( $_GET );
+        $_COOKIE  && self::filter_gpc( $_COOKIE );
+        $_REQUEST && self::filter_gpc( $_REQUEST );
+//        $_POST    && self::filter_gpc( $_POST );
+    }
+
+    /*
      * 获取执行的类型
      * @return [];
      * */
-    public static function get_type() {
+    public static function get() {
         //cli
-        if( IS_CLI ) return self::cli();
+        if( IS_CLI ) return  ( new router\cli() )->get_uri();
 
         //pathinfo
-        if ( IS_PATH_INFO) return self::pathinfo();
+        if ( IS_PATH_INFO) return ( new router\path_info() )->get_uri();
+
 
         return self::vars();
     }
@@ -82,55 +94,6 @@ class dispatcher {
         }
 
         return $request;
-    }
-
-    /*
-     * cli
-     * @return array
-     * */
-    public static function cli() {
-        $argv = ( isset( $_SERVER['argv'][1] )  ) ? explode('/', $_SERVER['argv'][1]) : [] ;
-        switch ( count($argv) ) {
-            case 2:
-                list( $r['controller'], $r['action'] ) = $argv;
-                break;
-            case 3:
-                list( $r['module'],$r['controller'], $r['action'] ) = $argv;
-                break;
-            default:
-                $r = [];
-        }
-        return $r;
-    }
-
-    /*
-     * PATH_INFO
-     * @return array
-     * **/
-    public static  function pathinfo() {
-        $pathinfo = array_filter( explode('/', $_SERVER['PATH_INFO']) );
-        $pathinfo = ( $pathinfo ) ? array_values( $pathinfo ) : [] ;
-        if( empty( $pathinfo) ) return false;
-
-        $u  = [];
-        switch( count( $pathinfo ) ) {
-            case 1:
-                list( $module ) = $pathinfo;
-                $u['module'] = $module;
-                break;
-            case 2:
-                list( $module, $controller ) = $pathinfo;
-                $u['module'] = $module;
-                $u['controller'] = $controller;
-                break;
-            default:
-                list( $module, $controller, $action ) = $pathinfo;
-                $u['module'] = $module;
-                $u['controller'] = $controller;
-                $u['action'] = $action;
-        }
-
-        return $u;
     }
 
     /*
