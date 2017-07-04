@@ -7,8 +7,11 @@ use heart\libs\log\log as log;
 
 class test extends controller {
 
+    public function index() {
+        echo 'index default';
+    }
     public function zhangliang() {
-        echo 123;
+        echo 'zhangliang 123';
     }
 
     //缓存使用集合
@@ -33,7 +36,7 @@ class test extends controller {
     }
 
     //数据库
-    public function index() {
+    public function index11() {
 //        echo 'default test index,controller';
 
 //        load_model( 'role' )->insert(
