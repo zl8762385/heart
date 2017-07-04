@@ -43,9 +43,9 @@ class dispatcher {
     public static function init() {
         //安全过滤
         $_GET     && self::filter_gpc( $_GET );
-//        $_POST    && self::filter_gpc( $_POST );
         $_COOKIE  && self::filter_gpc( $_COOKIE );
         $_REQUEST && self::filter_gpc( $_REQUEST );
+//        $_POST    && self::filter_gpc( $_POST );
 
         $request = self::get_type();
 
@@ -56,10 +56,10 @@ class dispatcher {
     }
 
     /*
-     * 获取执行的类型;
+     * 获取执行的类型
+     * @return [];
      * */
     public static function get_type() {
-
         //cli
         if( IS_CLI ) return self::cli();
 
@@ -88,7 +88,7 @@ class dispatcher {
      * cli
      * @return array
      * */
-    static public function cli() {
+    public static function cli() {
         $argv = ( isset( $_SERVER['argv'][1] )  ) ? explode('/', $_SERVER['argv'][1]) : [] ;
         switch ( count($argv) ) {
             case 2:
@@ -104,44 +104,40 @@ class dispatcher {
     }
 
     /*
-     * PATH_INFO支持
+     * PATH_INFO
      * @return array
      * **/
-    static public function pathinfo() {
+    public static  function pathinfo() {
         $pathinfo = array_filter( explode('/', $_SERVER['PATH_INFO']) );
+        $pathinfo = ( $pathinfo ) ? array_values( $pathinfo ) : [] ;
+        if( empty( $pathinfo) ) return false;
 
-        //安全过滤
-        foreach( $pathinfo as $k => &$v ) self::filter_gpc( $v );
-
-        $r = [];
-        if( count($pathinfo) == 2) {
-
-            //模块如果存在 改变路由顺序
-            if( is_dir( APP_PATH.load_config( 'directory_controller' ).'/'.$pathinfo[1] ) ) {
-                $r['module'] = $pathinfo[1];
-                $r['controller'] = $pathinfo[2];
-                $r['action'] = self::$action;
-            } else {
-                //默认访问index模块  test/inex 等同于 index/test/index
-                $r['module'] = self::$module;
-                $r['controller'] = $pathinfo[1];
-                $r['action'] = $pathinfo[2];
-            }
+        $u  = [];
+        switch( count( $pathinfo ) ) {
+            case 1:
+                list( $module ) = $pathinfo;
+                $u['module'] = $module;
+                break;
+            case 2:
+                list( $module, $controller ) = $pathinfo;
+                $u['module'] = $module;
+                $u['controller'] = $controller;
+                break;
+            default:
+                list( $module, $controller, $action ) = $pathinfo;
+                $u['module'] = $module;
+                $u['controller'] = $controller;
+                $u['action'] = $action;
         }
 
-        if( count($pathinfo) == 3 ) {
-            $r['module'] = $pathinfo[1];
-            $r['controller'] = $pathinfo[2];
-            $r['action'] = $pathinfo[3];
-        }
-
-        return $r;
+        return $u;
     }
 
     /*
      * URL安全过滤
+     * @return [] | string
      * */
-    static public function filter_gpc( &$data ) {
+    public static function filter_gpc( &$data ) {
 
         if( is_array($data) ) {
             foreach( $data as $k => $v ) {
