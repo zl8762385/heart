@@ -18,7 +18,7 @@ class app {
     static public function init(){
 
         //URi映射
-        \heart\libs\dispatcher::init();
+        \heart\libs\uri::init();
 
         //初始化SESSION
         session( load_config( 'session' ) );

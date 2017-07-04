@@ -20,9 +20,9 @@
 namespace heart\libs;
 
 //路由驱动
-use heart\libs\router\driver as router;
+use heart\libs\uri\driver as uri_driver;
 
-class dispatcher {
+class uri {
 
     //默认module
     public static $module = 'index';
@@ -72,10 +72,10 @@ class dispatcher {
      * */
     public static function get() {
         //cli
-        if( IS_CLI ) return  ( new router\cli() )->get_uri();
+        if( IS_CLI ) return  ( new uri_driver\cli() )->get_uri();
 
         //pathinfo
-        if ( IS_PATH_INFO) return ( new router\path_info() )->get_uri();
+        if ( IS_PATH_INFO) return ( new uri_driver\path_info() )->get_uri();
 
 
         return self::vars();

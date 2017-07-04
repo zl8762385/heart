@@ -10,7 +10,6 @@ class test extends controller {
     public function index() {
         $html =<<<EOF
 <pre>234</pre>
-console.log("%c%s","color: red; background: yellow; font-size: 24px;","警告！");
 EOF;
         echo $html;
 
