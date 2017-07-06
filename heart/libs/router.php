@@ -33,24 +33,46 @@ class router {
      * */
     public static function init() {
         __include( APP_PATH.'common/router.php' );
+        $_SERVER['REQUEST_METHOD'] = 'put';
     }
 
     public static function __callstatic($method, $args) {
         in_array( $method, self::$mehtod_arr ) || die( '未注册['.$method.']路由静态方法' );
 
         //注册数据
-        self::$method[ $args[0] ][ 'method' ] = $method;
-        self::$method[ $args[0] ][ 'args' ][ 'source' ] = $args[0];
-        self::$method[ $args[0] ][ 'args' ][ 'target' ] = $args[1];
+        $_method = ( $method == 'normal' ) ? self::delimiter('get') : self::delimiter($method) ;
+        self::$method[ $_method.$args[0] ][ 'method' ] = $method;
+        self::$method[ $_method.$args[0] ][ 'args' ][ 'source' ] = $args[0];
+        self::$method[ $_method.$args[0] ][ 'args' ][ 'target' ] = $args[1];
     }
 
     /*
-     * 获取当前URI,去掉/
+     * 分隔符 method_router
+     * @param $method string get,post,put.......
+     * @param $str string 分隔符
+     * @return string
+     * */
+    public static function delimiter( $method, $str = '___' ) {
+        return $method.$str;
+    }
+
+    /*
+     * 当前URI,去掉/
      * @return string
      * */
     public static function current_uri() {
         $uri = parse_url( $_SERVER['REQUEST_URI'], PHP_URL_PATH );
-        return substr( $uri,1, strlen( $uri ) );
+        $method = self::delimiter( self::current_method() );
+
+        return $method.substr( $uri,1, strlen( $uri ) );
+    }
+
+    /*
+     * 当前请求method
+     * @return string
+     * */
+    public static function current_method() {
+        return strtolower( $_SERVER['REQUEST_METHOD'] );
     }
 
     /*
@@ -84,6 +106,7 @@ class router {
 
             $_source = str_replace( $match, $pattern, $source );
             $_source = str_replace( '/', '\/', $_source );
+            echo $_source.'===='.$uri."<br/>\n";
 
             //查找匹配数据,找到直接返回.
             if( preg_match( '/^'.$_source.'$/', $uri, $m ) ) {
