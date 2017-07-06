@@ -33,7 +33,7 @@ class router {
      * */
     public static function init() {
         __include( APP_PATH.'common/router.php' );
-        $_SERVER['REQUEST_METHOD'] = 'put';
+//        $_SERVER['REQUEST_METHOD'] = 'put';
     }
 
     public static function __callstatic($method, $args) {
