@@ -25,5 +25,12 @@ router::normal( 'index/test/([\w]+)', 'index.test@zhangliang' );
 //标准字符串路由
 router::normal( 'index/test/normal', 'index.test@normal' );
 
+
 //restful
-router::get( 'admin/group/:id', 'index.test@index' );
+router::get( 'user', 'index.test@normal' );
+router::post( 'user', 'index.test@post_user' );
+router::put( 'user/1', function () {
+    echo 'put111';
+    return 'index.test@put_user';
+} );
+router::delete( 'user/1', 'index.test@delete_user' );

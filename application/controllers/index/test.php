@@ -33,6 +33,18 @@ class test extends controller {
         echo "标准";
     }
 
+    public function put_user() {
+        echo 'put_user';
+    }
+
+    public function delete_user() {
+        echo 'delete_user';
+    }
+
+    public function post_user() {
+        echo 'post_user';
+    }
+
     //缓存使用集合
     public function cache() {
 //        cache( 'test_redis', '12345');
