@@ -14,12 +14,12 @@ namespace heart\libs;
 class heart {
 
     //类映射字典
-    static public $_map = array();
+    public static $_map = array();
 
     /*
      * 初始化
      * */
-    static public function init() {
+    public static function init() {
 
         //注册自动加载
         spl_autoload_register( '\heart\libs\heart::autoload' );
@@ -36,7 +36,7 @@ class heart {
         app::init();
     }
 
-    static public function autoload( $class ){
+    public static function autoload( $class ){
         $class_path = str_replace( '\\', '/', $class );
 
         //核心

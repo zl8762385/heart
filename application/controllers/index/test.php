@@ -2,21 +2,35 @@
 namespace controllers\index;
 
 use heart\controller;
+use heart\libs\error_exception;
 use heart\libs\log\log as log;
 
 
 class test extends controller {
 
     public function index() {
-        $html =<<<EOF
-<pre>234</pre>
-EOF;
-        echo $html;
+//        $find = array("Hello","world");
+//        $replace = array("B");
+//        $arr = array("Hello","world","!");
+//        print_r(str_replace($find,$replace,$arr));
 
-//        echo 'index default';
+//        $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+        include( APP_PATH.'common/router.php' );
+        echo "\n <br/> default index";
+//        new \heart\libs\router();
     }
+
     public function zhangliang() {
-        echo 'zhangliang 123';
+        echo 'zhangliang 的方法';
+    }
+
+    public function mozi() {
+
+        echo '墨子方法';
+    }
+
+    public function normal() {
+        echo "标准";
     }
 
     //缓存使用集合

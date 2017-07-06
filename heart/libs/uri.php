@@ -52,6 +52,7 @@ class uri {
         defined( "__M__" ) or define( "__M__",  isset($request['module']) ? $request['module'] : self::$module );
         defined( "__C__" ) or define( "__C__",  isset($request['controller']) ? $request['controller'] : self::$controller );
         defined( "__A__" ) or define( "__A__",  isset($request['action']) ? $request['action']: self::$action );
+        defined( '__URI__' ) or define( "__URI__", __M__.'/'.__C__.'/'.__A__ );
     }
 
     /*

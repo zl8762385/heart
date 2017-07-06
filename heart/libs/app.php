@@ -9,22 +9,28 @@
 
 namespace heart\libs;
 
+use heart\libs\uri as uri;
+use heart\libs\router as router;
+
 class app {
 
     /*
      * 初始化
      * @return void
      * */
-    static public function init(){
+    public static function init(){
 
-        //URi映射
-        \heart\libs\uri::init();
+        //URi调度
+        uri::init();
 
         //初始化SESSION
         session( load_config( 'session' ) );
 
-        //应用function
+        //function
         self::app_common_func();
+
+        //路由
+        router::init();
 
         //执行
         self::run();
@@ -35,7 +41,7 @@ class app {
      *
      * @return void
      * */
-    static function app_common_func() {
+    public static function app_common_func() {
         $func_name = load_config( 'app_common_functions' );
         if( empty( $func_name ) ) return false;
 
@@ -46,15 +52,23 @@ class app {
 
     /*
      * 执行
-     *
      * @return void
      * */
-    static public function run() {
+    public static function run() {
 
-        $controller = '\\'.load_config('directory_controller').'\\'.__M__.'\\'.__C__;
+        $params = [];
+        if( $routers = router::dispatch() ) {
+            //exec路由调度
+            $controller = '\\'.load_config('directory_controller').'\\'.$routers['module'].'\\'.$routers['controller'];
+            $action = $routers['action'];
+        } else {
+            $controller = '\\'.load_config('directory_controller').'\\'.__M__.'\\'.__C__;
+            $action = __A__;
+        }
+
         $class = new $controller();
 
-        if( !method_exists($controller, __A__) ) throw new error_exception($controller.'\\'.__A__.' not found');
-        call_user_func( array( $class, __A__ ) );
+        if( !method_exists($controller, $action) ) throw new error_exception($controller.'\\'.$action.' not found');
+        call_user_func_array( array( $class, $action ), $params );
     }
 }

@@ -1,7 +1,6 @@
 <?php
 /*
  * 系统配置
- *
  * @copyright			(C) 2016 Heart
  * @author              maoxiaoqi <15501100090@163.com> <qq:3677989>
  *
