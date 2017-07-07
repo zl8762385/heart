@@ -133,7 +133,7 @@ class router {
 
             $_source = str_replace( $match, $pattern, $source );
             $_source = str_replace( '/', '\/', $_source );
-            echo $_source.'===='.$uri."<br/>\n";
+//            echo $_source.'===='.$uri."<br/>\n";
 
             //查找匹配数据,找到直接返回.
             if( preg_match( '/^'.$_source.'$/', $uri, $m ) ) {
