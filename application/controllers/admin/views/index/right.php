@@ -172,8 +172,5 @@
     </div>
 </section>
 
-<script src="http://test.heartphp.com/www/res/js/jquery.min.js"></script>
-<script src="http://test.heartphp.com/www/res/js/bootstrap.min.js"></script>
 
-</body>
-</html>
+<?=tpl_include( 'public/footer' );?>
