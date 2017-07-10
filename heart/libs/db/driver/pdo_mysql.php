@@ -347,7 +347,7 @@ class pdo_mysql implements db_interface{
 	 * 返回结果集
 	 * @param $type
 	 * */
-	final public function fetch_next($type = MYSQL_ASSOC) {
+	final public function fetch_next() {
 
 		$this->last_query->setFetchMode(PDO::FETCH_ASSOC);
 		return $this->last_query->fetch();
