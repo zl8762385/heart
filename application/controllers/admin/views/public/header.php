@@ -16,7 +16,6 @@
     <link href="<?=$domain.$css?>style.css" rel="stylesheet" />
     <link href="<?=$domain.$css?>responsive.css" rel="stylesheet" media="screen"/>
     <link href="<?=$domain.$css?>animation.css" rel="stylesheet" />
-    <script src="<?=$domain.$js?>modernizr-2.6.2-respond-1.1.0.min.js"></script>
     <script src="<?=$domain.$js?>jquery.min.js"></script>
     <script src="<?=$domain.$js?>base.js"></script>
     <script src="<?=$domain.$js?>jquery-easing.js"></script>
