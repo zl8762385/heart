@@ -134,7 +134,7 @@ class verify_code {
             $dir->close();
             $this->fontttf = $ttfs[array_rand($ttfs)];
         } 
-        $this->fontttf = $ttfPath . $this->fontttf;
+        $this->fontttf = strtolower( $ttfPath . $this->fontttf );
         
         if($this->useImgBg) {
             $this->_background();
