@@ -118,6 +118,8 @@ abstract class model {
 
         //返回分页HTML  调用方法 $this->db->page
         $this->page = $page->showpage();
+        //返回总页码数量
+        $this->page_total = $page->pagenum;
 
         return $this->db->select($fileds, $this->_name, $where, $limit, $order, $group);
     }
