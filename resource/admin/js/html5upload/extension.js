@@ -55,7 +55,9 @@ function callback_more_dialog_files(filename,htmlid,is_thumb,htmlname) {
 		var file_alt = temp[0];
 		var file_url = temp[1];
 		var file_id = temp[2];
-		str += '<li id="file_node_'+file_id+'"><input type="hidden" name="'+htmlname+'['+file_id+'][url]" value="'+file_url+'"> <textarea name="'+htmlname+'['+file_id+'][alt]" onfocus="if(this.value == this.defaultValue) this.value = \'\'" onblur="if(this.value.replace(\' \',\'\') == \'\') this.value = this.defaultValue;">'+file_alt+'</textarea> <a class="btn btn-danger btn-xs" href="javascript:remove_file(\''+file_id+'\');">移除</a></li>';
+        if( file_id != undefined ) {
+            str += '<li id="file_node_'+file_id+'"><input type="hidden" name="'+htmlname+'['+file_id+'][url]" value="'+file_url+'"> <textarea name="'+htmlname+'['+file_id+'][alt]" onfocus="if(this.value == this.defaultValue) this.value = \'\'" onblur="if(this.value.replace(\' \',\'\') == \'\') this.value = this.defaultValue;">'+file_alt+'</textarea> <a class="btn btn-danger btn-xs" href="javascript:remove_file(\''+file_id+'\');">移除</a></li>';
+        }
 	});
 
 	//$('[data-node="'+htmlid+'"]').append('123');

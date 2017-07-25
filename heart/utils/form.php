@@ -11,21 +11,21 @@ namespace heart\utils;
 
 class form {
 
-	/*
-	 * 编辑器
-	 * form::editor('content' , 'content', '', 'normal')
-	 * @param string $name     字段name名
-	 * @param string $editname 编辑器id名
-	 * @param string $value    初始化内容
-	 * @param string $toolbars 编辑器样式,可选风格：basic，normal
-	 * @param string $edit_type 编辑器类型
-	 * @return string
-	 * */
-	public static function editor($name = 'content', $editname = 'content', $value = '', $toolbars = 'basic') {
+    /*
+     * 编辑器
+     * form::editor('content' , 'content', '', 'normal')
+     * @param string $name     字段name名
+     * @param string $editname 编辑器id名
+     * @param string $value    初始化内容
+     * @param string $toolbars 编辑器样式,可选风格：basic，normal
+     * @param string $edit_type 编辑器类型
+     * @return string
+     * */
+    public static function editor($name = 'content', $editname = 'content', $value = '', $toolbars = 'basic') {
 
         $_js = load_config( 'domain' ).load_config( 'front_admin' )['js'];
 
-		$str = '';
+        $str = '';
         $str .= '<script id="' . $editname . '" name="' . $name . '" type="text/plain">' . $value . '</script>';
 
         $str .= '<script type="text/javascript" src="' . $_js . 'ueditor/ueditor.config.js"></script>';
@@ -58,8 +58,8 @@ class form {
         $str .= '});';
         $str .= '</script>';
 
-		return $str;
-	}
+        return $str;
+    }
 
     /*
      * 文件上传2，支持更多参数设置
@@ -123,15 +123,30 @@ class form {
 
         } else {
             //========================================多文件上传,需要借助回调生成多个框
-
             $callback = "callback_more_dialog_files";
 
             $str .= "<div id='{$id}' class='attaclist'>";
-                $str .= '<ul></ul>';
+            $str .= '<ul>';
 
-                $up_url = make_url( 'admin', 'attachment', 'upload_dialog', ["callback=$callback", "htmlid=$id", "_su=", "limit=$limit","is_thumb=$is_thumb","width=$width","height=$height","htmlname=$formname","ext=$ext","token=$token","cut=$cut","is_water=$is_water","is_allow_show_img=$is_allow_show_img"] );
+            //如果有批量默认值,全部遍历出来
+            if( !empty( $default_val ) && is_array( $default_val ) ) {
+                foreach( $default_val as $vk => $vv ) {
+                    $str .=<<<EOF
+<li id="file_node_{$vk}">
+    <input name="imagesfile[{$vk}][url]" value="{$vv['url']}" type="hidden">
+    <textarea name="imagesfile[{$vk}][alt]" onfocus="if(this.value == this.defaultValue) this.value = \'\'" onblur="if(this.value.replace(\' \',\'\') == \'\') this.value = this.defaultValue;">{$vv['alt']}</textarea>
+    <a class="btn btn-danger btn-xs" href="javascript:remove_file(\'{$vk}\');">移除</a>
+</li>
+EOF;
+                }
+            }
 
-                $str .= '<span class="input-group-btn"><button type="button" class="btn btn-white" onclick="openiframe(\'' . $up_url . '\',\'' . $id . '\',\'loading...\',810,315,' . $limit . ')">上传文件</button></span>';
+            $str .= '</ul>';
+
+            $up_url = make_url( 'admin', 'attachment', 'upload_dialog', ["callback=$callback", "htmlid=$id", "_su=", "limit=$limit","is_thumb=$is_thumb","width=$width","height=$height","htmlname=$formname","ext=$ext","token=$token","cut=$cut","is_water=$is_water","is_allow_show_img=$is_allow_show_img"] );
+
+            $str .= '<span class="input-group-btn"><button type="button" class="btn btn-white" onclick="openiframe(\'' . $up_url . '\',\'' . $id . '\',\'loading...\',810,315,' . $limit . ')">上传文件</button></span>';
+
 
             $str .='</div>';
 

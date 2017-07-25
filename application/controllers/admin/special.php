@@ -126,7 +126,7 @@ EOF;
             }
         }
 
-        $this->view->assign('atta', form::attachment('' ,1 , 'infos[cover]', '', ''));
+        $this->view->assign('atta', form::attachment('' ,3 , 'infos[cover]', '', ''));
         $this->view->assign('zip', form::attachment('zip' ,1 , 'infos[zip]', '', '', false));
         $this->view->display();
     }
@@ -155,9 +155,9 @@ EOF;
             }
         }
 
-        $menuid = gpc( 'menuid' );
-        if( empty( $menuid ) ) $this->show_message( 'MENU ID不能为空' );
-        $infos = $this->db->get_one( '*',['menuid' => $menuid ] );
+        $id = gpc( 'id' );
+        if( empty( $id ) ) $this->show_message( 'ID不能为空' );
+        $infos = $this->db->get_one( '*',['id' => $id ] );
 
         $this->view->assign( 'infos', $infos );
         $this->view->display();
