@@ -48,10 +48,17 @@
     <!--sidebar start-->
     <aside>
         <div id="sidebar"  class="nav-collapse ">
-            <?php foreach( $menus as $mk => $mv ):?>
+            <?php
+//
+            $menu_first_url = '';
+            foreach( $menus as $mk => $mv ):
+            ?>
             <ul class="sidebar-menu <?php if( !empty($mk) ):?>hide<?php endif;?>" id="panel-<?=$mv['menuid']?>" >
                 <div class="appicon center"><img src="<?=$domain.$images.$mv['icon']?>" alt=""></div>
-                <?php $sub_menus = $db_menus->select( '*', 'display=1 AND parentid='.$mv['menuid'].' AND menuid in ('.$role_list_str.')', '', 'sort ASC,menuid ASC' );?>
+                <?php
+                $sub_menus = $db_menus->select( '*', 'display=1 AND parentid='.$mv['menuid'].' AND menuid in ('.$role_list_str.')', '', 'sort ASC,menuid ASC' );
+                ?>
+
                 <?php foreach( $sub_menus as $sk => $sv ):?>
 
                     <?php
@@ -60,7 +67,9 @@
                             $param = explode( '&', $sv['param'] );
                         endif;
 
-                        $url = make_url( $sv['model'], $sv['controller'], $sv['action'], $param)
+                        $url = make_url( $sv['model'], $sv['controller'], $sv['action'], $param);
+                        if( empty( $menu_first_url ) ) $menu_first_url = $url;
+//                        echo $url."<br/>\n";
                     ?>
 
                     <li>
@@ -95,8 +104,10 @@
             <button class="close close-sm" type="button" onclick="$('#alert-warning').addClass('hide');"><i class="icon-times2"></i></button>
             <span id="warning-tips"><strong>安全提示：</strong> 建议您将网站admin目录设置为644或只读，<a href="#">点击查看设置方法！</a></span>
         </div>
-        <section id="iframecontent"><iframe  width="100%" name="iframeid" id="iframeid" frameborder="false" scrolling="auto" height="auto" allowtransparency="true" frameborder="0" src="<?=make_url( 'admin', 'index', 'right' )?>"></iframe>
+        <section id="iframecontent">
+            <iframe  width="100%" name="iframeid" id="iframeid" frameborder="false" scrolling="auto" height="auto" allowtransparency="true" frameborder="0" src="<?php echo ( !empty( $menu_first_url ) ) ? $menu_first_url : make_url( 'admin', 'index', 'right' ) ;?>"></iframe>
         </section>
+
     </section>
 </section>
 
