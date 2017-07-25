@@ -44,6 +44,9 @@ class special extends admin_base{
         //上传目录
         $this->upload_path = ROOT_PATH.'resource/upload/';
 
+        //域目录
+        $this->domain_upload_path = "/resource/upload/";
+
         //services special
         $this->_special = new services_special();
     }
@@ -72,7 +75,7 @@ EOF;
     public function index() {
 
         $where = '';
-        $lists = $this->db->select_lists( '*', $where, '10', 'id ASC');
+        $lists = $this->db->select_lists( '*', $where, '10', 'id DESC');
 
         $this->view->assign( 'page', $this->db->page );
         $this->view->assign( 'lists', $lists );
@@ -89,7 +92,6 @@ EOF;
             $infos = gpc( 'infos', 'P' );
 
             if( empty( $infos['name'] ) ) $this->show_message( '请输入专题名称(中文)' );
-//            if( empty( $infos['directory'] ) ) $this->show_message( '请输入专题名称(英文)' );
 
             $infos['createtime'] = $infos['updatetime'] = time();
 
@@ -126,7 +128,7 @@ EOF;
             }
         }
 
-        $this->view->assign('atta', form::attachment('' ,3 , 'infos[cover]', '', ''));
+        $this->view->assign('atta', form::attachment('' ,1 , 'infos[cover]', '', ''));
         $this->view->assign('zip', form::attachment('zip' ,1 , 'infos[zip]', '', '', false));
         $this->view->display();
     }
@@ -139,16 +141,15 @@ EOF;
     public function edit() {
         if( gpc( 'dosubmit', 'P' ) ) {
             $infos = gpc( 'infos', 'P' );
-            $menuid = gpc( 'menuid', 'P' );
+            $id = gpc( 'id', 'P' );
 
-            if( empty( $infos['name'] ) ) $this->show_message( '请输入菜单名' );
-            if( empty( $infos['model'] ) ) $this->show_message( '请输入模块名' );
-            if( empty( $infos['controller'] ) ) $this->show_message( '请输入控制器名' );
-            if( empty( $infos['action'] ) ) $this->show_message( '请输入方法名' );
+            if( empty( $infos['name'] ) ) $this->show_message( '请输入专题名称(中文)' );
 
-            $infos['createtime'] = $infos['updatetime'] = time();
+            if( isset( $infos['cover'] ) ) $infos['cover'] = str_replace( $this->domain_upload_path, '', $infos['cover'] );
 
-            if( $this->db->update( $infos, ['menuid' => $menuid] ) ) {
+            $infos['updatetime'] = time();
+
+            if( $this->db->update( $infos, ['id' => $id] ) ) {
                  $this->show_message( '操作成功', make_url( __M__, __C__, 'index' ) );
             } else {
                 $this->show_message( '操作失败,请联系管理员.' );
@@ -160,6 +161,8 @@ EOF;
         $infos = $this->db->get_one( '*',['id' => $id ] );
 
         $this->view->assign( 'infos', $infos );
+        $this->view->assign('atta', form::attachment('' ,1 , 'infos[cover]', $this->domain_upload_path.$infos['cover'], ''));
+        $this->view->assign('zip', form::attachment('zip' ,1 , 'infos[zip]', $infos['zip'], '', false));
         $this->view->display();
     }
 

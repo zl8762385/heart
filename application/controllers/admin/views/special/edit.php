@@ -14,77 +14,83 @@
     <div class="panel">
         <header>
             <header class="panel-heading">
-                <a href="<?=make_url( 'admin', 'menu', 'index' )?>" class="btn btn-default btn-sm" id="index-listing">
-                    <i class="icon-gears2 btn-icon"></i>菜单列表
+                <a href="<?=make_url( __M__, __C__, 'index' )?>" class="btn btn-default btn-sm" id="index-listing">
+                    <i class="icon-gears2 btn-icon"></i>专题列表
                 </a>
                 <a href="javascript:void(0);" class="btn btn-info btn-sm" id="index-add">
-                    <i class="icon-plus btn-icon"></i>修改菜单
+                    <i class="icon-plus btn-icon"></i>修改专题
                 </a>
             </header>
         </header>
 
-        <header class="panel-heading">
-            <span>修改菜单</span>
-        </header>
-
         <div class="panel-body">
             <form class="form-horizontal tasi-form" method="post" action="">
+
                 <div class="form-group">
-                    <label class="col-sm-2 col-xs-4 control-label">菜单名</label>
+                    <label class="col-sm-2 col-xs-4 control-label">专题名称(中文)</label>
                     <div class="col-lg-3 col-sm-4 col-xs-4 input-group">
                         <input type="text" class="form-control" name="infos[name]" value="<?=$infos['name']?>" color="#000000">
                     </div>
                 </div>
+
+                <!--
                 <div class="form-group">
-                    <label class="col-sm-2 col-xs-4 control-label">模块名</label>
+                    <label class="col-sm-2 col-xs-4 control-label">专题名称(英文)</label>
                     <div class="col-lg-3 col-sm-4 col-xs-4 input-group">
-                        <input type="text" class="form-control" name="infos[model]" value="<?=$infos['model']?>">
+                        <input type="text" class="form-control" name="infos[en_name]" value="" color="#000000">
+                        <span class="help-block">例如：http://www.xx.com/special_names</span>
                     </div>
                 </div>
+
                 <div class="form-group">
-                    <label class="col-sm-2 col-xs-4 control-label">控制器名</label>
+                    <label class="col-sm-2 col-xs-4 control-label">文件名</label>
                     <div class="col-lg-3 col-sm-4 col-xs-4 input-group">
-                        <input type="text" class="form-control" name="infos[controller]" value="<?=$infos['controller']?>">
+                        <input type="text" class="form-control" name="infos[files]" value="" color="#000000">
+                        <span class="help-block">如果未填写,默认index.html,压缩包存在多文件使用逗号区分,例如:a.html,b.html,c.html</span>
                     </div>
                 </div>
+                -->
+
                 <div class="form-group">
-                    <label class="col-sm-2 col-xs-4 control-label">方法名</label>
+                    <label class="col-sm-2 col-xs-4 control-label">封面图</label>
                     <div class="col-lg-3 col-sm-4 col-xs-4 input-group">
-                        <input type="text" class="form-control" name="infos[action]" value="<?=$infos['action']?>">
+                        <div class="input-group"><?=$atta;?></div>
                     </div>
                 </div>
+
                 <div class="form-group">
-                    <label class="col-sm-2 col-xs-4 control-label">ICON</label>
+                    <label class="col-sm-2 col-xs-4 control-label">ZIP压缩包</label>
                     <div class="col-lg-3 col-sm-4 col-xs-4 input-group">
-                        <input type="text" class="form-control" name="infos[icon]" value="<?=$infos['icon']?>">
-                        <span class="help-block">例如：appicons/1.png</span>
+                        <div class="input-group"><?=$zip;?></div>
                     </div>
                 </div>
+
                 <div class="form-group">
-                    <label class="col-sm-2 col-xs-4 control-label">附加参数</label>
+                    <label class="col-sm-2 col-xs-4 control-label">专题简介</label>
                     <div class="col-lg-3 col-sm-4 col-xs-4 input-group">
-                        <input type="text" class="form-control" name="infos[param]" value="<?=$infos['param']?>">
-                        <span class="help-block">例如：type=1&flag=open</span>
+                        <textarea name="infos[description]" class="form-control" cols="60" rows="3"><?=$infos['description']?></textarea>
                     </div>
                 </div>
+
                 <div class="form-group">
                     <label class="col-sm-2 col-xs-4 control-label"></label>
                     <div class="col-lg-4 col-sm-6 col-xs-6 input-group">
                         <div class="radioscross">
                             <label class="label_radio">
-                                <input name="infos[display]" value="1" type="radio" <?php if( $infos['display'] == 1 ):?>checked<?php endif;?> /> 显示
+                                <input name="infos[status]" value="0" type="radio" <?php if( $infos['status'] == 0 ) echo "checked";?>/>  发布
                             </label>
 
                             <label class="label_radio">
-                                <input name="infos[display]" value="0" type="radio" <?php if( empty( $infos['display'] ) ):?>checked<?php endif;?>/> 不显示
+                                <input name="infos[status]" value="1" type="radio" <?php if( $infos['status'] == 1 ) echo "checked";?>/> 暂停
                             </label>
                         </div>
                     </div>
                 </div>
+
                 <div class="form-group">
                     <label class="col-sm-2 col-xs-4 control-label"></label>
                     <div class="col-lg-3 col-sm-4 col-xs-4 input-group">
-                        <input type="hidden" name="menuid" value="<?=$infos['menuid']?>" />
+                        <input type="hidden" value="<?=$infos['id']?>" name="id" />
                         <input class="btn btn-info col-sm-12 col-xs-12" type="submit" name="dosubmit" value="提交">
                     </div>
                 </div>
@@ -95,5 +101,4 @@
     </div>
     </div>
 </section>
-
 <?php tpl_include( 'public/footer' )?>
