@@ -88,7 +88,8 @@ class router {
      * @return string
      * */
     public static function current_uri() {
-        $uri = parse_url( $_SERVER['REQUEST_URI'], PHP_URL_PATH );
+        $request_uri = ( IS_CLI  ) ? $_SERVER['argv'][1] : $_SERVER['REQUEST_URI'] ;
+        $uri = parse_url( $request_uri, PHP_URL_PATH );
         $method = self::delimiter( self::current_method() );
 
         return $method.substr( $uri,1, strlen( $uri ) );
@@ -99,7 +100,7 @@ class router {
      * @return string
      * */
     public static function current_method() {
-        return strtolower( $_SERVER['REQUEST_METHOD'] );
+        return ( IS_CLI ) ? 'get' : strtolower( $_SERVER['REQUEST_METHOD'] );
     }
 
     /*
