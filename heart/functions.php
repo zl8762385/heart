@@ -97,6 +97,9 @@ function load_config( $key = '', $file = '' ) {
     }
 
     if( !empty($file) ) {
+        if( !strstr( $file, APP_PATH ) ) {
+            $file = APP_PATH.'common'.DS.$file.EXT;
+        }
         $_CONF[ $file ] = __include( $file );
     } else {
         $app_path = APP_PATH.'common'.DS;

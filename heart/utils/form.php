@@ -134,8 +134,8 @@ class form {
                     $str .=<<<EOF
 <li id="file_node_{$vk}">
     <input name="imagesfile[{$vk}][url]" value="{$vv['url']}" type="hidden">
-    <textarea name="imagesfile[{$vk}][alt]" onfocus="if(this.value == this.defaultValue) this.value = \'\'" onblur="if(this.value.replace(\' \',\'\') == \'\') this.value = this.defaultValue;">{$vv['alt']}</textarea>
-    <a class="btn btn-danger btn-xs" href="javascript:remove_file(\'{$vk}\');">移除</a>
+    <textarea name="imagesfile[{$vk}][alt]" onfocus="if(this.value == this.defaultValue) this.value = ''" onblur="if(this.value.replace(' ','') == '') this.value = this.defaultValue;">{$vv['alt']}</textarea>
+    <a class="btn btn-danger btn-xs" href="javascript:remove_file('{$vk}');">移除</a>
 </li>
 EOF;
                 }
